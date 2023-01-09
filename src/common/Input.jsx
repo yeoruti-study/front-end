@@ -17,10 +17,10 @@ const Input = ({ width='auto', onReset=null,  ...res }) => {
 export default Input;
 
 const InputWrapper = styled.div`
-  position: relative;
   display: block;
-  padding: 8px 16px;
+  position: relative;
   ${({ width }) => width ? `width: ${width}` : null}; 
+  padding: 8px 16px;
   border: 2px solid ${COLOR.MAIN};
   border-radius: 5px;
   transition: all 0.2s;
@@ -39,10 +39,10 @@ const InputBox = styled.input`
 `
 
 const RemoveIcon = styled.span`
+  display: inline-block;
   position: absolute;
   right: 0.5rem;
   bottom: 0.5rem;
-  display: inline-block;
   &:hover {
     cursor: pointer;
   }
