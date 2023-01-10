@@ -1,10 +1,5 @@
 import styled from 'styled-components';
-
-// 추후 사용할 색상(팔레트) 정의
-const COLOR = {
-  MAIN: '#B4D9A9',
-  SUB: '#D5D9C4',
-};
+import COLOR from '../style/color';
 
 const Input = ({ width='auto', onReset=null,  ...res }) => {
   return (

@@ -1,11 +1,5 @@
 import styled from 'styled-components';
-
-// 추후 사용할 색상(팔레트) 정의
-const COLOR = {
-  MAIN: '#B4D9A9',
-  SUB: '#D5D9C4',
-  DARKMAIN: '#94B58B',  // 버튼 active 시에 사용
-};
+import COLOR from '../style/color';
 
 const Button = ({width='100%', children, ...res}) => {
   return <ButtonWrapper width={width} {...res}>{children}</ButtonWrapper>
