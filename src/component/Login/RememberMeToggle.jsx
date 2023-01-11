@@ -28,10 +28,10 @@ const ToggleState = () => {
 const ToggleButton = () => {
   const { on, toggle } = useToggle();
   return (
-    <ToggleButtonWrapper>
+    <ToggleButtonContainer>
       <ToggleInput type='checkbox' checked={on|false} onChange={toggle} />
       <ToggleSlider></ToggleSlider>
-    </ToggleButtonWrapper>);
+    </ToggleButtonContainer>);
 };
 
 RememberMeToggle.ToggleState = ToggleState;
@@ -50,7 +50,7 @@ const ToggleStateBox = styled.span`
   font-weight: bold;
 `
 
-const ToggleButtonWrapper = styled.label`
+const ToggleButtonContainer = styled.label`
   display: inline-block;
   position: relative;
   width: 2.6rem;
