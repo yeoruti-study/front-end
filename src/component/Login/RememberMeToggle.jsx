@@ -1,10 +1,11 @@
-import React, { useState, createContext } from 'react';
+import { useState, createContext } from 'react';
+import useToggle from '../../hook/useToggle';
 import styled from 'styled-components';
 import COLOR from '../../style/color';
 
-const ToggleContext = createContext();
+export const ToggleContext = createContext();
 
-export const RememberMeToggle = ({ children }) => {
+const RememberMeToggle = ({ children }) => {
   const [on, setOn] = useState();
   const toggle = () => setOn(!on);
   return (
@@ -15,16 +16,11 @@ export const RememberMeToggle = ({ children }) => {
   </ToggleContext.Provider>);
 };
 
-const useToggle = () => {
-  const context = React.useContext(ToggleContext);
-  if (context === undefined) throw new Error('useToggle must be used within a <Toggle />');
-  return context;
-};
-
 const ToggleState = () => {
   const { on } = useToggle();
   return <ToggleStateBox on={on|false}>&nbsp;{on ? 'ON' : 'OFF'}</ToggleStateBox>
 }
+
 const ToggleButton = () => {
   const { on, toggle } = useToggle();
   return (

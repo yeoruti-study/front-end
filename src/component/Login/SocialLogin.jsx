@@ -4,19 +4,19 @@ import styled from 'styled-components';
 
 const SocialLogin = () => {
   return (
-    <Container>
+    <SocialLoginContainer>
       <TextDivider>다른 계정으로 로그인</TextDivider>
       <LoginButtonBox>
         <SocialLoginButton src={kakaoLoginButton} />
         <SocialLoginButton src={naverLoginButton} />
       </LoginButtonBox>
-    </Container>
+    </SocialLoginContainer>
   )
 };
 
 export default SocialLogin;
 
-const Container = styled.div`
+const SocialLoginContainer = styled.div`
   display: flex;
   width: 100%;
   flex: 1;
