@@ -1,6 +1,7 @@
-import LoginContainer from './container/LoginContainer';
-import { createGlobalStyle } from 'styled-components';
-import { Routes, Route } from 'react-router-dom';
+//import LoginContainer from "./container/LoginContainer";
+import { createGlobalStyle } from "styled-components";
+import { Routes, Route } from "react-router-dom";
+import SubjectContainer from "./containers/SubjectContainer";
 
 const GlobalStyles = createGlobalStyle`
   *, *::before, *::after {
@@ -20,13 +21,15 @@ const GlobalStyles = createGlobalStyle`
       cursor: pointer;
     }
   }
-`
+`;
 function App() {
-  return (<>
-    <GlobalStyles />
-    <Routes>
-      <Route path='/' element={<LoginContainer />} />
-    </Routes>
+  return (
+    <>
+      <GlobalStyles />
+      <Routes>
+        {/*<Route path="/" element={<LoginContainer />} /> */}
+        <Route path="/home" element={<SubjectContainer />} />
+      </Routes>
     </>
   );
 }
