@@ -1,5 +1,6 @@
 import kakaoLoginButton from '../../assets/kakao_login.png';
 import naverLoginButton from '../../assets/naver_login.png';
+import { loginWithKakao } from './KakaoOauth';
 import styled from 'styled-components';
 
 const SocialLogin = () => {
@@ -7,8 +8,12 @@ const SocialLogin = () => {
     <SocialLoginContainer>
       <TextDivider>다른 계정으로 로그인</TextDivider>
       <LoginButtonBox>
-        <SocialLoginButton src={kakaoLoginButton} />
-        <SocialLoginButton src={naverLoginButton} />
+        <SocialLoginButton onClick={()=>loginWithKakao()} >
+          <img src={kakaoLoginButton} />
+        </SocialLoginButton>
+        <SocialLoginButton>
+          <img src={naverLoginButton} />
+        </SocialLoginButton>
       </LoginButtonBox>
     </SocialLoginContainer>
   )
@@ -46,10 +51,16 @@ const LoginButtonBox = styled.div`
   justify-content: space-between;
 `
 
-const SocialLoginButton = styled.img`
+const SocialLoginButton = styled.a`
+  display: inline-block;
   width: 45%;
-  object-fit: contain;
-  &:hover {
-    cursor: pointer;
+  height: auto;
+  & > img{
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    &:hover {
+      cursor: pointer;
+    }
   }
 `
