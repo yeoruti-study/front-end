@@ -1,9 +1,10 @@
-import React from 'react';
-import { ToggleContext } from '../component/Login/RememberMeToggle';
+import React from "react";
+import { ToggleContext } from "../components/RememberMeToggle";
 
 const useToggle = () => {
   const context = React.useContext(ToggleContext);
-  if (context === undefined) throw new Error('useToggle must be used within a <Toggle />');
+  if (context === undefined)
+    throw new Error("useToggle must be used within a <Toggle />");
   return context;
 };
 

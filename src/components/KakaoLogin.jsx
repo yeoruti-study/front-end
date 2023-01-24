@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { requestUserInfo } from "./KakaoOauth";
-import COLOR from "../../style/color";
+import COLOR from "../style/color";
 const KakaoLogin = () => {
   const { search } = useLocation();
   const code = new URLSearchParams(search).get("code");
