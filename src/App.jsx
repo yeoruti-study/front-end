@@ -1,5 +1,5 @@
 import GlobalStyles from "./style/GlobalStyles";
-import LoginContainer from "./container/LoginContainer";
+import LoginContainer from "./containers/LoginContainer";
 import SubjectContainer from "./containers/SubjectContainer";
 
 import { Routes, Route } from "react-router-dom";

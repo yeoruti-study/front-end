@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
-import { ReactComponent as Next } from "../assets/icons/chevron-right.svg";
-import { ReactComponent as Prev } from "../assets/icons/chevron-left.svg";
+import { ReactComponent as Next } from "../../assets/icons/chevron-right.svg";
+import { ReactComponent as Prev } from "../../assets/icons/chevron-left.svg";
 import styled from "styled-components";
 
 type SlideButtonProps = {
