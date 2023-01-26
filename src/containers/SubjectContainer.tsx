@@ -1,5 +1,5 @@
-import React from "react";
-import SubjectSlider from "../components/SubjectSlider";
+import SubjectSlider from "../components/Slider/SubjectSlider";
+import styled from "styled-components";
 
 export type DataType = {
   id: string;
@@ -12,12 +12,32 @@ let dummyData: Array<DataType> = [
 ];
 
 const SubjectContainer = () => {
-  // TODO: subject 가져오기
-  // return <>{/* <SubjectSlider /> */}</>;
   const addDefaultData = (data: Array<DataType>) => {
     return [{ id: "default", title: "과목 추가하기" }, ...data];
   };
-  return <SubjectSlider slides={addDefaultData(dummyData)} width={400} />;
+  return (
+    <SubjectSlider
+      slides={addDefaultData(dummyData)}
+      width={400}
+      handleClick={() => console.log("handleClick")}
+      addSubject={() => console.log("add subject")}
+    >
+      <ButtonWrapper>
+        <SubjectSlider.Left />
+        <SubjectSlider.Right />
+      </ButtonWrapper>
+      <SubjectSlider.Content />
+    </SubjectSlider>
+  );
 };
 
 export default SubjectContainer;
+
+const ButtonWrapper = styled.div`
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
