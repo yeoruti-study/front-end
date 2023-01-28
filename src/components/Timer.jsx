@@ -6,6 +6,8 @@ import { getTotalTime, setTotalTime } from '../utils/TotalTimeCookieUtils';
 import styled from 'styled-components';
 import { ReactComponent as Start } from '../assets/icons/start-timer-button.svg';
 import { ReactComponent as Stop } from '../assets/icons/stop-timer-button.svg';
+import Button from '../common/Button';
+import COLOR from '../style/color';
   
 export const TimerContext = createContext();
 
@@ -28,8 +30,10 @@ const Timer = ({ children }) => {
   }, [total])
 
   return (
-    <TimerContext.Provider value={{ showTotal, setShowTotal, total, addTotal, onGoing, setOnGoing}}>
-      { children }
+    <TimerContext.Provider value={{ showTotal, setShowTotal, total, addTotal, onGoing, setOnGoing }}>
+      <TimerWrapper>
+        {children}
+      </TimerWrapper>
     </TimerContext.Provider>
   );
 };
@@ -55,14 +59,14 @@ const TimeWindow = () => {
 
   return (
     showTotal ?
-      <h2>{total.hour}:{total.min}:{total.sec}</h2>
-      : <h2>{time.hour}:{time.min}:{time.sec}</h2>
+      <TimeWindowWrapper>{total.hour} : {total.min} : {total.sec}</TimeWindowWrapper>
+      : <TimeWindowWrapper>{time.hour} : {time.min} : {time.sec}</TimeWindowWrapper>
   );
 };
 
 const ToggleButton = () => {
   const { showTotal, setShowTotal } = useTimerContext();
-  return (<ToggleButtonWrapper showTotal={showTotal} onClick={() => setShowTotal(!showTotal)}>All</ToggleButtonWrapper>);
+  return (<Button primary={showTotal} onClick={() => setShowTotal(!showTotal)}>All</Button>);
 };
 
 const ControlButton = () => {
@@ -78,7 +82,7 @@ const StartButton = () => {
   const {setOnGoing} = useTimerContext();
   function onStart() { return setOnGoing(true); }
   return (
-    <Start onClick={onStart} style={{ width: '1rem', height: '1rem'}}>시작</Start>
+    <StartButtonWrapper onClick={onStart} style={{ width: '2rem', height: '2rem'}}>시작</StartButtonWrapper>
   );
 };
 
@@ -86,7 +90,7 @@ const StopButton = () => {
   const { setOnGoing } = useTimerContext();
   function onStop() { return setOnGoing(false); }
   return (
-    <Stop onClick={onStop} style={{width: '1rem', height: '1rem'}}>중지</Stop>
+    <StopButtonWrapper onClick={onStop} style={{width: '2rem', height: '2rem'}}>중지</StopButtonWrapper>
   );
 };
 
@@ -96,6 +100,38 @@ Timer.ControlButton = ControlButton;
 
 export default Timer;
 
-const ToggleButtonWrapper = styled.button`
-  ${({ showTotal }) => showTotal ? 'background-color: lightgray;' : null }
+const TimerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const TimeWindowWrapper = styled.div`
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 1rem;
+`
+
+const StartButtonWrapper = styled(Start)`
+  width: 2rem;
+  height: 2rem;
+  fill: ${COLOR.MAIN};
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    cursor: default;
+  }
+`
+
+const StopButtonWrapper = styled(Stop)`
+  width: 2rem;
+  height: 2rem;
+  fill: ${COLOR.SUB};
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    cursor: default;
+  }
 `

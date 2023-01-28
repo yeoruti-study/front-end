@@ -1,11 +1,19 @@
 import Timer from '../components/Timer';
+import styled from 'styled-components';
 
 const TimerContainer = () => {
   return <Timer>
-    <Timer.TimeWindow />
+    <TimerControlBox>
+      <Timer.TimeWindow />
+      <Timer.ControlButton />
+    </TimerControlBox>
     <Timer.ToggleButton />
-    <Timer.ControlButton />
   </Timer>
 };
 
 export default TimerContainer;
+
+const TimerControlBox = styled.div`
+  display: flex;
+  align-items: center;
+`
