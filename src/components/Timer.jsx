@@ -12,7 +12,7 @@ import COLOR from '../style/color';
 export const TimerContext = createContext();
 
 const Timer = ({ children }) => {
-  const [showTotal, setShowTotal] = useState(false);
+  const [showTotal, setShowTotal] = useState(true);
   const [total, setTotal] = useState({ hour: '00', min: '00', sec: '00', count:0 });
   const [onGoing, setOnGoing] = useState(false);
 
@@ -79,8 +79,11 @@ const ControlButton = () => {
 };
 
 const StartButton = () => {
-  const {setOnGoing} = useTimerContext();
-  function onStart() { return setOnGoing(true); }
+  const {setShowTotal, setOnGoing} = useTimerContext();
+  function onStart() {
+    setShowTotal(false);
+    return setOnGoing(true);
+  }
   return (
     <StartButtonWrapper onClick={onStart} style={{ width: '2rem', height: '2rem'}}>시작</StartButtonWrapper>
   );
