@@ -4,6 +4,8 @@ import useCounter from '../hooks/useCounter';
 import changeCountToTime from '../utils/changeCountToTime';
 import { getTotalTime, setTotalTime } from '../utils/TotalTimeCookieUtils';
 import styled from 'styled-components';
+import { ReactComponent as Start } from '../assets/icons/start-timer-button.svg';
+import { ReactComponent as Stop } from '../assets/icons/stop-timer-button.svg';
   
 export const TimerContext = createContext();
 
@@ -76,7 +78,7 @@ const StartButton = () => {
   const {setOnGoing} = useTimerContext();
   function onStart() { return setOnGoing(true); }
   return (
-    <button onClick={onStart}>시작</button>
+    <Start onClick={onStart} style={{ width: '1rem', height: '1rem'}}>시작</Start>
   );
 };
 
@@ -84,7 +86,7 @@ const StopButton = () => {
   const { setOnGoing } = useTimerContext();
   function onStop() { return setOnGoing(false); }
   return (
-    <button onClick={onStop}>중지</button>
+    <Stop onClick={onStop} style={{width: '1rem', height: '1rem'}}>중지</Stop>
   );
 };
 
