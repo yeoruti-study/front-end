@@ -1,12 +1,13 @@
-import styled from 'styled-components';
-import COLOR from '../style/color';
+import styled from "styled-components";
+import COLOR from "../style/color";
 
-const Input = ({ width='auto', onReset=null,  ...res }) => {
+const Input = ({ width = "auto", onReset = null, ...res }) => {
   return (
     <InputWrapper width={width}>
       <InputBox {...res} adPadding={onReset} />
       {onReset && <RemoveIcon onClick={onReset}>&times;</RemoveIcon>}
-    </InputWrapper>);
+    </InputWrapper>
+  );
 };
 
 export default Input;
@@ -14,24 +15,24 @@ export default Input;
 const InputWrapper = styled.div`
   display: block;
   position: relative;
-  ${({ width }) => width ? `width: ${width}` : null}; 
+  ${({ width }) => (width ? `width: ${width}` : null)};
   padding: 8px 16px;
   border: 2px solid ${COLOR.MAIN};
   border-radius: 5px;
   transition: all 0.2s;
-  &:focus-within{
+  &:focus-within {
     box-shadow: 0 0 8px ${COLOR.SUB};
   }
-`
+`;
 
 const InputBox = styled.input`
   display: inline-block;
   width: 100%;
   border: 0;
   padding: 0;
-  ${({ adPadding })=>adPadding&&`padding-right: 0.6rem`};
+  ${({ adPadding }) => adPadding && `padding-right: 0.6rem`};
   font-size: 1rem;
-`
+`;
 
 const RemoveIcon = styled.span`
   display: inline-block;
@@ -41,4 +42,4 @@ const RemoveIcon = styled.span`
   &:hover {
     cursor: pointer;
   }
-`
+`;

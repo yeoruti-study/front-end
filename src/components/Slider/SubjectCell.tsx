@@ -7,11 +7,11 @@ type SubjectCellProps = {
   addSubject?: MouseEventHandler;
 };
 const SubjectCell: React.FC<SubjectCellProps> = (props) => {
-  const { id, title } = props;
+  const { id, title, addSubject } = props;
   return (
     <>
       {id && id === "default" ? (
-        <CellButton onClick={props.addSubject}></CellButton>
+        <CellButton onClick={addSubject && addSubject}></CellButton>
       ) : (
         <CellButton>{title}</CellButton>
       )}
