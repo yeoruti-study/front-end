@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from "react";
 import { ReactComponent as Next } from "../../assets/icons/chevron-right.svg";
 import { ReactComponent as Prev } from "../../assets/icons/chevron-left.svg";
 import styled from "styled-components";
+import COLOR from "../../style/color";
 
 type SlideButtonProps = {
   direction: string;
@@ -54,13 +55,17 @@ const SlideButtonWrapper = styled.div<ButtonProps>`
   height: 40px;
   border-radius: 50%;
   border: none;
-  background: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   color: white;
   cursor: pointer;
+  &:hover {
+    background-color: ${COLOR.MAIN};
+    transition: background-color 0.1s linear;
+  }
 `;
 const LeftButtonWrapper = styled(SlideButtonWrapper)`
-  left: 5px;
+  left: -70px;
 `;
 const RightButtonWrapper = styled(SlideButtonWrapper)`
-  right: 5px;
+  right: -70px;
 `;
