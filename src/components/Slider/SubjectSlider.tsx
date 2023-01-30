@@ -55,15 +55,7 @@ const SliderContent = () => {
   const { translate, transition, width } = useSliderContext().state;
   const { subList } = useSliderContext();
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        left: "50%",
-        transform: "translateX(-150px)",
-      }}
-    >
+    <ContentWrapper>
       <ContentStyle
         translateVal={translate}
         transitionVal={transition}
@@ -78,7 +70,7 @@ const SliderContent = () => {
           />
         ))}
       </ContentStyle>
-    </div>
+    </ContentWrapper>
   );
 };
 
@@ -121,6 +113,13 @@ interface ContentType {
   transitionVal: number;
   widthVal: number;
 }
+const ContentWrapper = styled.div`
+  position: relative;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-150px);
+`;
 const ContentStyle = styled.ul<ContentType>`
   display: grid;
   grid-auto-flow: column;
