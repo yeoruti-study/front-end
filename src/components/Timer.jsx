@@ -2,7 +2,8 @@ import { createContext, useState, useEffect } from 'react';
 import useTimerContext from '../hooks/useTimerContext';
 import useCounter from '../hooks/useCounter';
 import changeCountToTime from '../utils/changeCountToTime';
-import { getTotalTime, setTotalTime } from '../utils/TotalTimeCookieUtils';
+import { getCookie, setCookie } from '../utils/cookieUtils';
+import formatDate from '../utils/formatDate';
 import styled from 'styled-components';
 import { ReactComponent as Start } from '../assets/icons/start-timer-button.svg';
 import { ReactComponent as Stop } from '../assets/icons/stop-timer-button.svg';
@@ -16,8 +17,16 @@ const Timer = ({ children }) => {
   const [onGoing, setOnGoing] = useState(false);
 
   useEffect(() => {
-    const cookie = getTotalTime();
-    if (cookie) setTotal(changeCountToTime(cookie));
+    const totalTimeCookie = parseInt(getCookie('totalTime'));
+    if (totalTimeCookie) {
+      const recentDateCookie = getCookie('recentDate');
+      if (recentDateCookie === formatDate(new Date())) setTotal(changeCountToTime(totalTimeCookie));
+      else {
+        console.log(recentDateCookie, formatDate(new Date()));
+        setCookie('totalTime', 0, 3);
+        setCookie('recentDate', formatDate(new Date()), 3);
+      }
+    };
   }, []);
 
   const addTotal = (count) => {
@@ -25,7 +34,7 @@ const Timer = ({ children }) => {
   };
 
   useEffect(() => {
-    setTotalTime(total.count);
+    setCookie('totalTime', total.count, 3);
   }, [total])
 
   return (
