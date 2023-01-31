@@ -6,7 +6,6 @@ import { getTotalTime, setTotalTime } from '../utils/TotalTimeCookieUtils';
 import styled from 'styled-components';
 import { ReactComponent as Start } from '../assets/icons/start-timer-button.svg';
 import { ReactComponent as Stop } from '../assets/icons/stop-timer-button.svg';
-import Button from '../common/Button';
 import COLOR from '../style/color';
   
 export const TimerContext = createContext();
@@ -66,7 +65,15 @@ const TimeWindow = () => {
 
 const ToggleButton = () => {
   const { showTotal, setShowTotal } = useTimerContext();
-  return (<Button primary={showTotal} onClick={() => setShowTotal(!showTotal)}>All</Button>);
+
+  const onToggle = () => setShowTotal(!showTotal);
+
+  return (<ToggleInputWrapper>
+    <ToggleInput type='radio' id='total' name='showToggle' onChange={onToggle} checked={showTotal} />
+    <label htmlFor='total'>일일 학습량</label>
+    <ToggleInput type='radio' id='timer' name='showToggle' onChange={onToggle} checked={!showTotal} />
+    <label htmlFor='timer'>현재 진행량</label>    
+  </ToggleInputWrapper>);
 };
 
 const ControlButton = () => {
@@ -110,9 +117,36 @@ const TimerWrapper = styled.div`
 `
 
 const TimeWindowWrapper = styled.div`
+  margin: 1rem;
   font-size: 2rem;
   font-weight: 900;
-  margin: 1rem;
+`
+
+const ToggleInputWrapper = styled.div`
+  display: flex;
+  margin: 0.5rem auto;
+`
+
+const ToggleInput = styled.input`
+  display: none;
+  &+label {
+    margin: 0 1rem;
+    padding: 0.5rem 2.5rem;
+    border: 2px solid ${COLOR.MAIN};
+    border-radius: 5px;
+    color: ${COLOR.MAIN};
+    &:hover {
+      cursor: pointer;
+    }
+    &:active {
+      cursor: default;
+    }
+  }
+  &:checked+label {
+    background-color: ${COLOR.MAIN};
+    color: white;
+    box-shadow: 0 0 8px ${COLOR.SUB};
+  }
 `
 
 const StartButtonWrapper = styled(Start)`
