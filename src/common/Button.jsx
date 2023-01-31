@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import COLOR from '../style/color';
 
-const Button = ({width='100%', primary, children, ...res}) => {
+const Button = ({width='100%', primary=true, children, ...res}) => {
   return <ButtonWrapper width={width} primary={primary}  {...res}>{children}</ButtonWrapper>
 }
 
