@@ -1,3 +1,5 @@
+/* 쿠키 관련 get/set 함수 */
+
 export const getCookie = (key) => {
   const cookieString = document.cookie.split(';').filter(c => c.split('=')[0].trim() === key);
   const value = cookieString[0]?.split('=')[1];
