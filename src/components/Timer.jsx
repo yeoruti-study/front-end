@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { ReactComponent as Start } from '../assets/icons/start-timer-button.svg';
 import { ReactComponent as Stop } from '../assets/icons/stop-timer-button.svg';
 import COLOR from '../style/color';
+
   
 export const TimerContext = createContext();
 
@@ -101,7 +102,7 @@ const StartButton = () => {
     return setOnGoing(true);
   }
   return (
-    <StartButtonWrapper onClick={onStart} style={{ width: '2rem', height: '2rem'}}>시작</StartButtonWrapper>
+    <StartButtonWrapper onClick={onStart}>시작</StartButtonWrapper>
   );
 };
 
@@ -109,7 +110,7 @@ const StopButton = () => {
   const { setOnGoing } = useTimerContext();
   function onStop() { return setOnGoing(false); }
   return (
-    <StopButtonWrapper onClick={onStop} style={{width: '2rem', height: '2rem'}}>중지</StopButtonWrapper>
+    <StopButtonWrapper onClick={onStop}>중지</StopButtonWrapper>
   );
 };
 
@@ -120,30 +121,37 @@ Timer.ControlButton = ControlButton;
 export default Timer;
 
 const TimerWrapper = styled.div`
+  width: 80vw;
+  position: absolute;
+  left: 50vw;
+  top: 7vh;
+  transform: translate(-50%, 10vh);
   display: flex;
   flex-direction: column;
   align-items: center;
 `
 
 const TimeWindowWrapper = styled.div`
-  margin: 1rem;
-  font-size: 2rem;
+  margin-bottom: 1vw;
+  margin-right: 2vw;
+  font-size: 3rem;
   font-weight: 900;
 `
 
 const ToggleInputWrapper = styled.div`
   display: flex;
-  margin: 0.5rem auto;
+  margin: 1rem auto;
+  gap: 2rem;
 `
 
 const ToggleInput = styled.input`
   display: none;
   &+label {
-    margin: 0 1rem;
-    padding: 0.5rem 2.5rem;
+    padding: 0.5rem 1rem;
     border: 2px solid ${COLOR.MAIN};
     border-radius: 5px;
     color: ${COLOR.MAIN};
+    font-size: 1.3rem;
     &:hover {
       cursor: pointer;
     }
@@ -159,8 +167,8 @@ const ToggleInput = styled.input`
 `
 
 const StartButtonWrapper = styled(Start)`
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   fill: ${COLOR.MAIN};
   &:hover {
     cursor: pointer;
@@ -171,8 +179,8 @@ const StartButtonWrapper = styled(Start)`
 `
 
 const StopButtonWrapper = styled(Stop)`
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   fill: ${COLOR.SUB};
   &:hover {
     cursor: pointer;
