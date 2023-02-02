@@ -1,6 +1,6 @@
 import GlobalStyles from "./style/GlobalStyles";
 import LoginContainer from "./containers/LoginContainer";
-import SubjectContainer from "./containers/SubjectContainer";
+import Home from "./pages/Home";
 
 import { Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
@@ -12,7 +12,7 @@ function App() {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<LoginContainer />} />
-          <Route path="/home" element={<SubjectContainer />} />
+          <Route path="/home" element={<Home />} />
         </Routes>
       </RecoilRoot>
     </>
