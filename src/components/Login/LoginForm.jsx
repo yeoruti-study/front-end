@@ -16,7 +16,7 @@ const LoginForm = () => {
         <span>&nbsp;자동로그인</span>
         <RememberMeToggle.ToggleState />
       </RememberMeToggle>
-      <Button onClick={onLogin}>로그인</Button>
+      <Button primary onClick={onLogin}>로그인</Button>
       <LinkBox>
         {/* 페이지 완성되면 추후에 연결 */}
         <Link to='/' >아이디 찾기</Link>
