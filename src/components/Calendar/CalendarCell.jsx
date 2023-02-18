@@ -11,10 +11,11 @@ export default CalendarCell;
 
 const CalendarCellContainer = styled.div`
   display: flex;
-  width: 10vw;
-  height: 5vmax;
+  width: 6vmax;
+  height: 6vmax;
   padding: 0.5vw;
   flex-direction: column;
+  text-align: center;
 `
 
 const CalendarCellDay = styled.div`
@@ -22,5 +23,6 @@ const CalendarCellDay = styled.div`
 `
 
 const CalendarCellContent = styled.div`
+  text-align: start;
   flex: 6;
 `
