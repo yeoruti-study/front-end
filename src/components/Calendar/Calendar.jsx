@@ -1,10 +1,12 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import useCalendar from '../../hooks/useCalendar';
 import CalendarCell from './CalendarCell';
 import {ReactComponent as Prev} from '../../assets/icons/chevron-left.svg';
 import {ReactComponent as Next} from '../../assets/icons/chevron-right.svg';
 import styled from 'styled-components';
 import COLOR from '../../style/color';
+
+import dummy from './dummy.json';
 
 export const CalendarContext = createContext();
 
@@ -20,12 +22,54 @@ const findEndDate = (date) => {
   return newDate.getDate();
 };
 
+const isSame = (date1, date2) => {
+  return {
+    month: () => date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth(),
+    date: () => this.month()&&date1.getDate() === date2.getDate()
+  };
+};
+
+// schedule이 특정 범위(+/-)에 포함되는지 확인하는 함수 
+// range=3, date 기준 전후 3개월에 schedule이 포함되는지 확인
+const checkSchedule = (date, schedule, range=0) => {
+  const targetDate = new Date(date.year, date.month, 1);
+  const startDate = new Date(targetDate);
+  const endDate = new Date(targetDate);
+
+  startDate.setMonth(targetDate.getMonth() - range);
+  if (!range) endDate.setMonth(startDate.getMonth() + range);
+  endDate.setDate(findEndDate({ year: endDate.getFullYear(), month: endDate.getMonth() }));
+  
+  return (isSame.month(startDate, schedule.startDate)
+    || isSame.month(endDate, schedule.endDate)
+    || (schedule.startDate < startDate && endDate < schedule.endDate))
+    || (startDate < schedule.startDate && schedule.endDate < endDate);
+};
+
+const initialSchedule = [];
+const monthlySchedules = [];
+
 const Calendar = ({ children }) => {
   const today = new Date();
+  const [schedule, setSchedule] = useState(initialSchedule);
+  const [monthlySchedule, setMonthlySchedule] = useState(monthlySchedules);
   const [date, setDate] = useState({ year: today.getFullYear(), month: today.getMonth(), startDay: findStartDay(today) });
   
+  useEffect(() => {
+    let formattedSchedule = dummy.data?.map(d => ({ ...d, startDate: new Date(d.startDate), endDate: new Date(d.endDate) }));
+    formattedSchedule = formattedSchedule.filter(s => checkSchedule(date, s, 3));
+    setSchedule(formattedSchedule);
+    console.log(formattedSchedule);
+  }, []);
 
-  return <CalendarContext.Provider value={{ date, setDate }}>
+  useEffect(() => {
+    /* 
+    [{index: -1, schedule: {}}, {index: -1, schedule: {}}, ...] 이와 같은 형식으로 스케쥴을 monthlySchedule에 저장
+    이후 CalendarBoard에서 이 정보를 토대로 렌더링
+    */
+  }, [date]);
+
+  return <CalendarContext.Provider value={{ schedule, setMonthlySchedule, date, setDate }}>
     <CalendarContainer>
       {children}
     </CalendarContainer>
@@ -33,7 +77,11 @@ const Calendar = ({ children }) => {
 };
 
 const CalendarHeader = () => {
-  const { date, setDate } = useCalendar();
+  const { schedule, setMonthlySchedule, date, setDate } = useCalendar();
+
+  useEffect(() => {
+    checkSchedule(date, schedule);
+  }, []);
 
   const prevMonth = () => {
     const prev = new Date(date.year, date.month - 1, 1);
@@ -122,7 +170,7 @@ const CalendarDateMove = styled.div`
   display: flex;
   right: 1vw;
   height: 100%;
-  alignItems: end;
+  align-items: end;
 `
 
 const PrevMonth = styled(Prev)`
