@@ -22,6 +22,7 @@ const findEndDate = (date) => {
   return newDate.getDate();
 };
 
+// 두 날짜의 달/일이 같은지 확인하는 함수
 const isSame = (date1, date2) => {
   return {
     month: () => date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth(),
@@ -40,8 +41,8 @@ const checkSchedule = (date, schedule, range=0) => {
   if (!range) endDate.setMonth(startDate.getMonth() + range);
   endDate.setDate(findEndDate({ year: endDate.getFullYear(), month: endDate.getMonth() }));
   
-  return (isSame.month(startDate, schedule.startDate)
-    || isSame.month(endDate, schedule.endDate)
+  return (isSame(startDate, schedule.startDate).month()
+    || isSame(endDate, schedule.endDate).month()
     || (schedule.startDate < startDate && endDate < schedule.endDate))
     || (startDate < schedule.startDate && schedule.endDate < endDate);
 };
@@ -78,10 +79,6 @@ const Calendar = ({ children }) => {
 
 const CalendarHeader = () => {
   const { schedule, setMonthlySchedule, date, setDate } = useCalendar();
-
-  useEffect(() => {
-    checkSchedule(date, schedule);
-  }, []);
 
   const prevMonth = () => {
     const prev = new Date(date.year, date.month - 1, 1);
