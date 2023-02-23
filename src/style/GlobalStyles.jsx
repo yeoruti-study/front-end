@@ -18,6 +18,11 @@ const GlobalStyles = createGlobalStyle`
       cursor: pointer;
     }
   }
+  @media screen and (max-width: 400px) {
+    html { 
+      font-size: 3.5vw;
+    }
+  }
 `;
 
 export default GlobalStyles;
