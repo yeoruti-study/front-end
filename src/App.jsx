@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import CalendarContainer from "./containers/CalendarContainer";
 import { Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
+import StudyHome from "./containers/StudyRoom/StudyHome";
+import StudyRoomDetail from "./containers/StudyRoom/StudyRoomDetail";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Route path="/" element={<LoginContainer />} />
           <Route path="/home" element={<Home />} />
           <Route path="/calendar" element={<CalendarContainer />} />
+          <Route path="/studyroom" element={<StudyHome />} />
+          <Route path="/studyroom/detail/:rid" element={<StudyRoomDetail />} />
         </Routes>
       </RecoilRoot>
     </>
