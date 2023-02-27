@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import StudyHome from "./containers/StudyRoom/StudyHome";
 import StudyRoomDetail from "./containers/StudyRoom/StudyRoomDetail";
+import FullCalendar from "./components/Calendar/FullCalendar";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginContainer />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/calendar" element={<CalendarContainer />} />
+          <Route path="/calendar" element={<FullCalendar />} />
           <Route path="/studyroom" element={<StudyHome />} />
           <Route path="/studyroom/detail/:rid" element={<StudyRoomDetail />} />
         </Routes>
