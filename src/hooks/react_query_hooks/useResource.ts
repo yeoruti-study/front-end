@@ -1,3 +1,4 @@
+import { request } from "http";
 import { useMutation, useQuery } from "react-query";
 
 type ResourceKeyType = [string] | [string, ...any[]] | string[];
@@ -5,6 +6,13 @@ type ResourceKeyType = [string] | [string, ...any[]] | string[];
 export function createResource<T, P>(resource: {
   key: ResourceKeyType;
   fetcher: (params?: P) => Promise<T>;
+}) {
+  return resource;
+}
+
+export function createResourceWithQuery<T, P>(resource: {
+  key: ResourceKeyType;
+  fetcher: (query: string, params?: P) => Promise<T>;
 }) {
   return resource;
 }
@@ -27,6 +35,16 @@ export function createRequest<T, P>(request: {
   return {
     key: request.key,
     requester: request.requester,
+  };
+}
+
+export function createRequestWithQuery<T, P>(request: {
+  key: ResourceKeyType;
+  requester: (query: string, params?: P) => Promise<T>;
+}) {
+  return {
+    key: request.key,
+    requester: (query: string) => request.requester(query),
   };
 }
 
