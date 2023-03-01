@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 import StudyList, { RoomType } from "../../components/StudyRoom/StudyList";
 import StudyModal from "../../components/StudyRoom/StudyModal/StudyModal";
+import { useStudyRoomAllGet } from "../../hooks/react_query_hooks/useStudyRoom";
 const roomListDummy: RoomType[] = [
   {
     id: "25e1d2ea-4063-4be5-ba28-ad7c226df2f5",
@@ -125,6 +126,7 @@ const roomListDummy: RoomType[] = [
   },
 ];
 const StudyHome = () => {
+  const { status, data } = useStudyRoomAllGet();
   return (
     <>
       {/* <StudyModal /> */}
@@ -133,7 +135,9 @@ const StudyHome = () => {
           <h1>스터디 룸</h1>
         </StudyHeader>
         <StudyBody>
-          <StudyList roomList={roomListDummy} />
+          {status === "success" && data && (
+            <StudyList roomList={data.data.data} />
+          )}
         </StudyBody>
       </StudyWrap>
     </>
