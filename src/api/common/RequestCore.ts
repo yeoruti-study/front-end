@@ -16,10 +16,13 @@ class RequestCore {
   public apiRequest = <T, P>({
     requestMethod,
     requestData,
+    url,
   }: {
     requestMethod: AxiosMethod;
     requestData?: T;
+    url: string;
   }) => {
+    this.url += url;
     if (!this.client) {
       console.error("API client 없음");
       return;
