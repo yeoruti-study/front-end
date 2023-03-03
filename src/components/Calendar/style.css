@@ -1,0 +1,38 @@
+:root {
+  --color-main: #B4D9A9;
+  --color-sub: #D5D9C4;
+  --color-darkmain: #94B58B,
+}
+
+.fc { /* the calendar root */
+  width: 70%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 이벤트 박스 div */
+.fc-event{
+  border: var(--color-darkmain);
+}
+
+/* 이벤트 박스 inner div*/
+.fc-event-main{
+  padding: 0.1rem 0;
+  background-color: var(--color-main);
+}
+
+/* 상단의 메뉴 */
+.fc-today-button{
+  background-color: var(--color-sub) !important;
+  border: 0 !important;
+}
+
+.fc-prev-button,
+.fc-next-button{
+  background-color: var(--color-main) !important;
+  border: 0 !important;
+}
+
+.fc-day-today{
+  background-color: var(--color-sub) !important;
+}
