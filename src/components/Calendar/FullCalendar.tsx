@@ -1,29 +1,52 @@
-import React, {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import {
   EventApi,
-  EventDropArg,
   DateSelectArg,
   EventClickArg,
   EventContentArg,
-  formatDate,
 } from '@fullcalendar/core';
 import OriginFullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { INITIAL_EVENTS } from './event-utils';
+import { INITIAL_EVENTS } from './event-utils';                       // 테스트용 이벤트들(추후 삭제 예정)
 import './style.css';
 import axios from 'axios';
+import Modal from '../../common/Modal';
+import CalendarModal from './CalendarModal';
 
 const FullCalendar = () => {
-  const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
+  const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);   // 현재 화면에 보여지는 모든 이벤트들이 담긴 배열
+  const [selectInfo, setSelectInfo] = useState<DateSelectArg>();        // 현재 선택된 정보를 포함한 캘린더 상태
+  const [modal, setModal] = useState(false);                            // 모달 플로팅을 위한 flag
 
-
+  useEffect(() => {
+    const userId = '05637e09-0ce5-40a9-ab7f-08f792fe56dc';
+    axios.get(`http://localhost:8080/api/study-goal/list/user/${userId}`)
+      .then(res =>{
+        if (res.status === 200) {
+          console.log('조회 성공!');
+          res.data.data.forEach((s:any, i:number) => console.log(i+1, s.title));
+        }
+      })
+      .catch(error => {
+        console.log('에러발생!');
+        console.log(error);
+      });
+  }, [])
 
   const handleEvents = (events: EventApi[]) => {
-    setCurrentEvents(events); // 이벤트 목록이 보임
+    setCurrentEvents(events);
   };
 
-  return (
+  const handleDateSelect = (selectInfo: DateSelectArg) => {
+    setSelectInfo(selectInfo);
+    const title = 'ds';
+    if (title) {
+      return setModal(true);
+    }
+  };
+
+  return (<>
         <OriginFullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -32,7 +55,7 @@ const FullCalendar = () => {
           }}
           initialView='dayGridMonth'
           selectable={true}
-          editable={true}
+          //editable={true}
           droppable={true}
           dayMaxEvents={true}
           events={INITIAL_EVENTS}
@@ -41,32 +64,17 @@ const FullCalendar = () => {
           eventClick={handleEventClick}
           eventsSet={handleEvents} // called after events are initialized/added/changed/removed
           defaultAllDay={true}
-        />
+          fixedWeekCount={false}
+          aspectRatio={1.7}
+    />
+      <Modal open={modal} header='목표 세우기'>
+      <CalendarModal selectInfo={selectInfo} close={()=>setModal(false)} />
+      </Modal>
+    </>
   );
 };
 
 export default FullCalendar;
-
-const handleDateSelect = (selectInfo: DateSelectArg) => {
-  let title = prompt('새로운 일정의 제목을 입력해주세요.');
-  let calendarApi = selectInfo.view.calendar;
-
-  calendarApi.unselect(); // clear date selection
-
-  if (title) {
-    const newSchedule = {
-      title,
-      detail : "test",
-      goalTime : "PT40H30M",
-      startDate : new Date(selectInfo.startStr),
-      endDate : new Date(selectInfo.endStr),
-      userId : "05637e09-0ce5-40a9-ab7f-08f792fe56dc",
-      userStudySubjectId : "1e347c2e-4f17-4838-ae07-49be14ebc60b"
-    };
-    calendarApi.addEvent({...newSchedule, start: newSchedule.startDate, end: newSchedule.endDate});
-    
-  }
-};
 
 const handleEventClick = (clickInfo: EventClickArg) => {
   // 추후에 모달을 띄워 수정/삭제의 유무 질문
@@ -77,6 +85,6 @@ const handleEventClick = (clickInfo: EventClickArg) => {
   
 function renderEventContent(eventContent: EventContentArg) {
   return (
-      <i>{eventContent.event.title}</i>
+      <div>{eventContent.event.title}</div>
   )
 };
