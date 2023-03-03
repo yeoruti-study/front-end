@@ -8,13 +8,13 @@ import {
 import OriginFullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { INITIAL_EVENTS } from './event-utils';                       // 테스트용 이벤트들(추후 삭제 예정)
 import './style.css';
 import axios from 'axios';
 import Modal from '../../common/Modal';
 import CalendarModal from './CalendarModal';
 
 const FullCalendar = () => {
+  const [eventList, setEventList] = useState([]);
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);   // 현재 화면에 보여지는 모든 이벤트들이 담긴 배열
   const [selectInfo, setSelectInfo] = useState<DateSelectArg>();        // 현재 선택된 정보를 포함한 캘린더 상태
   const [modal, setModal] = useState(false);                            // 모달 플로팅을 위한 flag
@@ -25,7 +25,8 @@ const FullCalendar = () => {
       .then(res =>{
         if (res.status === 200) {
           console.log('조회 성공!');
-          res.data.data.forEach((s:any, i:number) => console.log(i+1, s.title));
+          //res.data.data.forEach((s:any, i:number) => console.log(i+1, s.title));
+          setEventList(res.data.data.map((e:any) => ({...e, start: e.startDate, end: e.endDate})));
         }
       })
       .catch(error => {
@@ -58,7 +59,7 @@ const FullCalendar = () => {
           //editable={true}
           droppable={true}
           dayMaxEvents={true}
-          events={INITIAL_EVENTS}
+          events={eventList}
           select={handleDateSelect}
           eventContent={renderEventContent}         // 일정 custom 함수
           eventClick={handleEventClick}

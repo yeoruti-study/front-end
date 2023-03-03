@@ -1,7 +1,6 @@
 import GlobalStyles from "./style/GlobalStyles";
 import LoginContainer from "./containers/LoginContainer";
 import Home from "./pages/Home";
-import CalendarContainer from "./containers/CalendarContainer";
 import { Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import StudyHome from "./containers/StudyRoom/StudyHome";
