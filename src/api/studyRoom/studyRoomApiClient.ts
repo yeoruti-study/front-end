@@ -1,8 +1,8 @@
 import axios from "axios";
-import studyRoomUriSelector from "./studyRoomUriSelector";
+import uriSelector from "../../utils/uriSelector";
 
 const studyRoomApiClient = axios.create();
 
-studyRoomApiClient.defaults.baseURL = studyRoomUriSelector();
+studyRoomApiClient.defaults.baseURL = uriSelector();
 
 export default studyRoomApiClient;
