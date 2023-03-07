@@ -1,8 +1,10 @@
 import React, { PropsWithChildren, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { RoomUserType } from "../../api/roomUser/types/roomUserType";
 import { navItemData } from "../../components/StudyRoom/StudyRoomDetail/data";
 import StudyUserList from "../../components/StudyRoom/StudyUserList";
+import { useRoomUserAllGet } from "../../hooks/react_query_hooks/useRoomUser";
 
 export const dummyData = [
   {
@@ -37,9 +39,9 @@ export const dummyData = [
 
 const StudyRoomDetail = () => {
   const { rid } = useParams();
-  useEffect(() => {
-    // TODO: rid 값으로 studyroom 정보 가져옴
-  }, [rid]);
+  const { status, data } = useRoomUserAllGet();
+  if (status === "success") console.log(data);
+
   return (
     <>
       <StudyDetailWrap>
@@ -50,7 +52,9 @@ const StudyRoomDetail = () => {
           <StudyDetailNav>
             <NavList />
           </StudyDetailNav>
-          <StudyUserList userList={dummyData} />
+          {status === "success" && (
+            <StudyUserList userList={data?.data.data as RoomUserType[]} />
+          )}
         </StudyDetailBody>
       </StudyDetailWrap>
     </>
