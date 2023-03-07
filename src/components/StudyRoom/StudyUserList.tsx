@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { dummyData } from "../../containers/StudyRoom/StudyRoomDetail";
-
+import { RoomUserType } from "../../api/roomUser/types/roomUserType";
 type ModalUserListProps = {
   // TODO: 이후에 type 파일 만들어서 정리 필요
-  userList: typeof dummyData;
+  userList: RoomUserType[];
 };
 const StudyUserList = (props: ModalUserListProps) => {
   const { userList } = props;

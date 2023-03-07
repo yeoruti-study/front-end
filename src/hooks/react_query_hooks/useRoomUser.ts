@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import {
   ROOM_USER_POST,
   ROOM_USER_DELETE,
@@ -30,11 +31,12 @@ export const useRoomUserDelete = () => {
 
 export const useRoomUserAllGet = () => {
   // TODO: query 값 가져와서 주입
-  const query = "844e68a6-b8ed-4e88-9ed6-a98bbeb2a2a3";
+  const { rid } = useParams();
+  //const query = "844e68a6-b8ed-4e88-9ed6-a98bbeb2a2a3";
   const queryState = useResource({
     useQuery,
     key: ROOM_USER_ALL_GET.key,
-    fetcher: () => ROOM_USER_ALL_GET.fetcher(query),
+    fetcher: () => ROOM_USER_ALL_GET.fetcher(rid!),
   });
 
   return queryState;

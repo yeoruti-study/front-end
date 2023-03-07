@@ -6,11 +6,12 @@ type AxiosMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 class RequestCore {
   private client: AxiosInstance;
 
+  public baseUrl = "";
   public url = "";
 
   constructor(client: AxiosInstance, url: string) {
     this.client = client;
-    this.url = url;
+    this.baseUrl = url;
   }
 
   public apiRequest = <T, P>({
@@ -22,7 +23,7 @@ class RequestCore {
     requestData?: T;
     url: string;
   }) => {
-    this.url += url;
+    this.url = this.baseUrl + url;
     if (!this.client) {
       console.error("API client 없음");
       return;

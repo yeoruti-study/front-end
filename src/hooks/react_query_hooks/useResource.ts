@@ -28,6 +28,18 @@ export function useResource<T, P>(resource: {
   );
 }
 
+// export function useResourceWithQuery<T, P>(resource: {
+//   useQuery: typeof useQuery;
+//   key: ResourceKeyType;
+//   fetcher: (query: string, params?: P) => Promise<T>;
+//   params?: P;
+// }) {
+//   return resource.useQuery({
+//     queryKey: resource.key,
+//     queryFn: () => resource.fetcher(query, resource?.params)
+//   });
+// }
+
 export function createRequest<T, P>(request: {
   key: ResourceKeyType;
   requester: (params?: P) => Promise<T>;
@@ -56,5 +68,17 @@ export function useSetResource<T, P>(request: {
   return request.useMutation({
     mutationKey: request.key,
     mutationFn: request.requester,
+  });
+}
+
+export function useSetResourceWithQuery<T, P>(request: {
+  useMutation: typeof useMutation;
+  key: ResourceKeyType;
+  requester: (query: string, params?: P) => Promise<T>;
+  params?: P;
+}) {
+  return request.useMutation({
+    mutationKey: request.key,
+    mutationFn: (query: string) => request.requester(query, request?.params),
   });
 }
