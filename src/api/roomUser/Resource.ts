@@ -2,6 +2,7 @@ import roomUserRequest from ".";
 import {
   createRequest,
   createRequestWithQuery,
+  createResource,
   createResourceWithQuery,
 } from "../../hooks/react_query_hooks/useResource";
 
@@ -20,7 +21,7 @@ export const ROOM_USER_ALL_GET = createResourceWithQuery({
   fetcher: (studyRoomId: string) => roomUserRequest.RoomUserAllGet(studyRoomId),
 });
 
-export const ROOM_USER_STUDYROOM_GET = createResourceWithQuery({
+export const ROOM_USER_STUDYROOM_GET = createResource({
   key: ["ROOM_USER_STUDYROOM_GET"],
-  fetcher: (userId: string) => roomUserRequest.RoomUserStudyRoomGet(userId),
+  fetcher: roomUserRequest.RoomUserStudyRoomGet,
 });
