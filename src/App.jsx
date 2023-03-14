@@ -7,6 +7,7 @@ import StudyHome from "./containers/StudyRoom/StudyHome";
 import StudyRoomDetail from "./containers/StudyRoom/StudyRoomDetail";
 import FullCalendar from "./components/Calendar/FullCalendar";
 import { QueryClient, QueryClientProvider } from "react-query";
+import OAuthContainer from "./containers/OAuthContainer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,7 @@ function App() {
         <GlobalStyles />
         <Routes>
           <Route path="/" element={<LoginContainer />} />
+          <Route path="/login/oauth2/code/:type" element={<OAuthContainer />} />
           <Route path="/home" element={<Home />} />
           <Route path="/calendar" element={<FullCalendar />} />
           <Route path="/studyroom" element={<StudyHome />} />
