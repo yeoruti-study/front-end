@@ -8,6 +8,8 @@ import StudyRoomDetail from "./containers/StudyRoom/StudyRoomDetail";
 import FullCalendar from "./components/Calendar/FullCalendar";
 import { QueryClient, QueryClientProvider } from "react-query";
 import OAuthContainer from "./containers/OAuthContainer";
+import StudyRoom from "./pages/StudyRoom";
+import MyStudyRoom from "./pages/MyStudyRoom";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,8 +30,13 @@ function App() {
           <Route path="/login/oauth2/code/:type" element={<OAuthContainer />} />
           <Route path="/home" element={<Home />} />
           <Route path="/calendar" element={<FullCalendar />} />
-          <Route path="/studyroom" element={<StudyHome />} />
-          <Route path="/studyroom/detail/:rid" element={<StudyRoomDetail />} />
+          <Route path="/studyroom/:type" element={<StudyRoom />} />
+          {/* <Route path="/studyroom/detail/:rid" element={<StudyRoomDetail />} /> */}
+          <Route
+            path="/studyroom/my-studyroom/:type"
+            element={<MyStudyRoom />}
+          />
+          <Route path="/test" element={<StudyHome />} />
         </Routes>
       </RecoilRoot>
     </QueryClientProvider>
