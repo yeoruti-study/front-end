@@ -17,10 +17,11 @@ const OAuthContainer = () => {
       provider: socialType as SocialLoginType,
       code: parseSocialCode(),
     });
+    console.log(status);
   }, []);
-  if (status === "success") {
-    navigate("/home");
-  }
+  useEffect(() => {
+    if (status === "success") navigate("/home");
+  }, [status]);
   return <div>oauth handler page</div>;
 };
 

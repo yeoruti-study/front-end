@@ -42,7 +42,7 @@ export const useRoomUserAllGet = () => {
   return queryState;
 };
 
-export const useRoomStudyRoomGet = () => {
+export const useRoomUserStudyRoomGet = () => {
   // TODO: query 값 가져와서 주입
 
   const queryState = useResource({
