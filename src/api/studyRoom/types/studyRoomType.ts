@@ -12,4 +12,6 @@ export interface StudyRoomType {
   masterUserId?: string;
   createdAt: string;
   updatedAt?: string;
+  masterUserUsername: string;
+  masterUserProfileName: string;
 }

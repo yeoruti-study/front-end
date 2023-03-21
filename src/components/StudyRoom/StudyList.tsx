@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { StudyRoomType } from "../../api/studyRoom/types/studyRoomType";
 import StudyRoomItem from "./StudyRoomItem";
 
 export interface RoomType {
@@ -16,10 +17,12 @@ export interface RoomType {
   masterUserId?: string;
   createdAt: string;
   updatedAt?: string;
+  masterUserUsername: string;
+  masterUserProfileName: string;
 }
 
 interface ListProps {
-  roomList: RoomType[];
+  roomList: StudyRoomType[];
 }
 const StudyList = (props: ListProps) => {
   const { roomList } = props;
@@ -39,14 +42,14 @@ const ListUl = styled.ul`
   flex-direction: column;
   gap: 1.25rem;
   width: 31.25rem;
-  transform: translateX(100px);
+  /* transform: translateX(100px); */
 
-  .Room__Ready {
+  /* .Room__Ready {
     transition: transform 0.5s;
     transform: translateX(-100px);
   }
   .Room__Default {
     transition: transform 0.5s;
     transform: translateX(0);
-  }
+  } */
 `;

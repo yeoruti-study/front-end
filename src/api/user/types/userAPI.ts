@@ -6,8 +6,9 @@ interface DefaultResultRes {
 }
 
 export type UserInfo = {
+  id: string;
   username: string;
-  password: string;
+  roles: string;
   profileName: string;
   profileBirth: string;
   profileImagePath?: string;
