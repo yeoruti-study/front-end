@@ -55,7 +55,7 @@ export const MyStudyRoomDropDown = () => {
     }
   }, [dropdownVisible]);
 
-  return dropdownAni ? (
+  return dropdownAni && status === "success" && data!.data.data.length > 0 ? (
     <article
       style={{ overflow: "hidden", borderRadius: "10px", position: "relative" }}
     >
@@ -65,13 +65,13 @@ export const MyStudyRoomDropDown = () => {
           dropdownVisible ? "Dropdown__Slide__In" : "Dropdown__Slide__Out"
         }
       >
-        {dummyStudyRoom.map((item, idx) => {
+        {/* {dummyStudyRoom.map((item, idx) => {
           return (
             <li key={item.id} onClick={() => setCurStudyRoom(item.name)}>
               {item.name}
             </li>
           );
-        })}
+        })} */}
         {data?.data.data.map((item, idx) => {
           return (
             <li key={item.id} onClick={() => setCurStudyRoom(item.name)}>
@@ -226,7 +226,7 @@ export const MyHome = () => {
 
 const MyHomeNotification = () => {
   return (
-    <div style={{ padding: "5px" }}>
+    <div style={{ padding: "5px", width: "100%" }}>
       <MyHomeNotificationDiv>공지</MyHomeNotificationDiv>
     </div>
   );
