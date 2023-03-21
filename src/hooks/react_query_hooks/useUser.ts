@@ -1,5 +1,11 @@
+import { useEffect } from "react";
+import { isIncludesOneof } from "./../../utils/urlParser";
 import { useMutation, useQuery } from "react-query";
-import { UserEdit, UserInfo } from "../../api/user/types/userAPI";
+import {
+  UserEdit,
+  UserInfo,
+  UserPostRequest,
+} from "../../api/user/types/userAPI";
 import {
   USER_ALL_GET,
   USER_DELETE,
@@ -8,11 +14,9 @@ import {
   USER_PROFILE_GET,
   USER_PROFILE_PUT,
 } from "./../../api/user/Resource";
-import {
-  useResource,
-  useSetResource,
-  useSetResourceWithQuery,
-} from "./useResource";
+import { useResource, useSetResource } from "./useResource";
+import { useSetRecoilState } from "recoil";
+import userInfoAtom from "../../atoms/userInfo";
 
 export const useUserPost = () => {
   const queryState = useSetResource({
@@ -21,7 +25,7 @@ export const useUserPost = () => {
     requester: USER_POST.requester,
   });
 
-  const onClick = (userInfo: UserInfo) => {
+  const onClick = (userInfo: UserPostRequest) => {
     queryState.mutate({
       ...userInfo,
     });
@@ -33,11 +37,18 @@ export const useUserPost = () => {
 };
 
 export const useUserProfileGet = () => {
+  const setUserInfo = useSetRecoilState(userInfoAtom);
   const queryState = useResource({
     useQuery,
     key: USER_PROFILE_GET.key,
     fetcher: USER_PROFILE_GET.fetcher,
   });
+  const { status } = queryState;
+  useEffect(() => {
+    if (queryState.status === "success" && queryState.data) {
+      setUserInfo({ ...queryState.data.data.data });
+    }
+  }, [status]);
 
   return queryState;
 };
