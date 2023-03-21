@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import { UserInfo } from "../api/user/types/userAPI";
 const userInfoAtom = atom<UserInfo>({
   key: "userInfoAtom",
@@ -14,4 +14,11 @@ const userInfoAtom = atom<UserInfo>({
   },
 });
 
+export const userIdSelector = selector({
+  key: "userIdSelector",
+  get: ({ get }) => {
+    const originState = get(userInfoAtom);
+    return originState.id;
+  },
+});
 export default userInfoAtom;
