@@ -1,6 +1,9 @@
 import React, { PropsWithChildren } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import userInfoAtom from "../../atoms/userInfo";
 import COLOR from "../../style/color";
+import localConsole from "../../utils/localConsole";
 type StudyRoomLayoutProps = {
   Main: () => JSX.Element;
   Nav: () => JSX.Element;
@@ -9,6 +12,9 @@ type StudyRoomLayoutProps = {
 };
 const StudyRoomLayout = (props: StudyRoomLayoutProps) => {
   const { Main, Nav, Dropdown, Member } = props;
+  // userInfoAtom update test
+  // const userInfo = useRecoilValue(userInfoAtom);
+  // localConsole?.log(userInfo);
   return (
     <StudyRoomLayout.Wrap>
       <section className="item">
@@ -31,8 +37,9 @@ export default StudyRoomLayout;
 
 const LayoutContainer = styled.section`
   display: grid;
+  width: 100%;
   height: 100%;
-  grid-template-columns: 3fr 7fr;
+  grid-template-columns: 2fr 8fr;
 
   border-collapse: collapse;
   //overflow: hidden;
@@ -56,9 +63,14 @@ const LayoutContainer = styled.section`
       }
     }
     &:nth-child(2) {
-      padding-top: 100px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding-top: 35px;
+      /* padding-top: 100px; */
       grid-column: 2/3;
-      min-width: 162px;
+      /* min-width: 162px; */
+      background-color: rgba(0, 0, 0, 0.05);
       color: black;
     }
     /* &:nth-child(3) {
