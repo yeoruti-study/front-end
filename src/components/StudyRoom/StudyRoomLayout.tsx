@@ -56,7 +56,8 @@ const LayoutContainer = styled.section`
       grid-column: 1/2;
       min-width: 162px;
       background-color: ${COLOR.DARKMAIN};
-
+      -webkit-box-shadow: 2px 0px 10px -2px rgba(0, 0, 0, 0.7);
+      box-shadow: 2px 0px 10px -2px rgba(0, 0, 0, 0.4);
       section {
         padding: 20px 0;
         border-bottom: 1px solid ${COLOR.MAIN};
