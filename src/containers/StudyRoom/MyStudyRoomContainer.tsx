@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import myStudyRoomAtom from "../../atoms/myStudyRoom";
+import curStudyRoomAtom from "../../atoms/curStudyRoom";
+import { myStudyRoomArraySelector } from "../../atoms/myStudyRoom";
 import StudyRoomLayout from "../../components/StudyRoom/StudyRoomLayout";
-import { useRoomUserStudyRoomGet } from "../../hooks/react_query_hooks/useRoomUser";
+import {
+  useRoomUserAllGet,
+  useRoomUserStudyRoomGet,
+} from "../../hooks/react_query_hooks/useRoomUser";
 import COLOR from "../../style/color";
 const MyStudyRoomContainer = () => {
+  // useRoomUserStudyRoomGet();
+  useEffect(() => {}, []);
   return (
     <StudyRoomLayout
       Nav={MyStudyRoomNav}
@@ -37,7 +43,7 @@ const dummyStudyRoom = [
 ];
 export const MyStudyRoomDropDown = () => {
   const { status, data } = useRoomUserStudyRoomGet();
-  const [curStudyRoom, setCurStudyRoom] = useRecoilState(myStudyRoomAtom);
+  const [curStudyRoom, setCurStudyRoom] = useRecoilState(curStudyRoomAtom);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [dropdownAni, setDropdownAni] = useState(false);
   const repeatRef = useRef<NodeJS.Timeout | null>(null);
@@ -65,16 +71,9 @@ export const MyStudyRoomDropDown = () => {
           dropdownVisible ? "Dropdown__Slide__In" : "Dropdown__Slide__Out"
         }
       >
-        {/* {dummyStudyRoom.map((item, idx) => {
-          return (
-            <li key={item.id} onClick={() => setCurStudyRoom(item.name)}>
-              {item.name}
-            </li>
-          );
-        })} */}
         {data?.data.data.map((item, idx) => {
           return (
-            <li key={item.id} onClick={() => setCurStudyRoom(item.name)}>
+            <li key={item.id} onClick={() => setCurStudyRoom({ ...item })}>
               {item.name}
             </li>
           );
@@ -83,7 +82,9 @@ export const MyStudyRoomDropDown = () => {
     </article>
   ) : (
     <DropdownDiv onClick={onDropdownClick}>
-      <span>{curStudyRoom}</span>
+      <span>
+        {curStudyRoom.id === "" ? "스터디룸 선택" : curStudyRoom.name}
+      </span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -174,14 +175,25 @@ export const NavItemLi = styled.li<NavItemProps>`
   }
 `;
 export const MyStudyRoomMemberStatus = () => {
-  return (
-    <MemberUl>
-      <MyStudyRoomMemberItem name={"최용재"} />
-      <MyStudyRoomMemberItem name={"하정수"} />
-      <MyStudyRoomMemberItem name={"정채은"} />
-      <MyStudyRoomMemberItem name={"이채민"} />
-    </MemberUl>
-  );
+  const curStudyRoom = useRecoilValue(curStudyRoomAtom);
+  const { status, data, refetch } = useRoomUserAllGet();
+  useEffect(() => {
+    refetch();
+  }, [curStudyRoom]);
+  if (status === "success" && data) {
+    return (
+      <MemberUl>
+        {data.data.data.map((item) => (
+          <MyStudyRoomMemberItem name={item.profileName} />
+        ))}
+        {/* <MyStudyRoomMemberItem name={"최용재"} />
+        <MyStudyRoomMemberItem name={"하정수"} />
+        <MyStudyRoomMemberItem name={"정채은"} />
+        <MyStudyRoomMemberItem name={"이채민"} /> */}
+      </MemberUl>
+    );
+  }
+  return <></>;
 };
 type MemberItemProps = {
   name: string;
