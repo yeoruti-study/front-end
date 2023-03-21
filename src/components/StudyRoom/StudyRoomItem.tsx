@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { StudyRoomType } from "../../api/studyRoom/types/studyRoomType";
-import { RoomType } from "./StudyList";
 import COLOR from "../../style/color";
+import { useRecoilValue } from "recoil";
+import { userIdSelector } from "../../atoms/userInfo";
+import myStudyRoomSetAtom from "../../atoms/myStudyRoom";
 interface RoomProps {
   roomItemData: StudyRoomType;
+  onClick: (userId: string, studyRoomId: string) => void;
 }
 export const getId = (id: string, type: string) => {
   return type + id;
 };
 const StudyRoomItem = (props: RoomProps) => {
-  const [isReady, setIsReady] = useState(false);
-  const roomRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const userId = useRecoilValue(userIdSelector);
+  const myStudyRoomSet = useRecoilValue(myStudyRoomSetAtom);
+  // const [isReady, setIsReady] = useState(false);
+  // const roomRef = useRef<HTMLDivElement>(null);
 
   // TODO: onClick 함수 구현 (useRoomUser 사용)
 
@@ -30,36 +33,50 @@ const StudyRoomItem = (props: RoomProps) => {
     masterUserUsername,
     masterUserProfileName,
   } = props.roomItemData;
+  const { onClick } = props;
 
+  // TODO: isSigned 로직 수정
+
+  const isSigned = masterUserId === userId || myStudyRoomSet.has(id);
+  console.log(masterUserId, userId);
+
+  const signupHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isSigned) return;
+    onClick(userId, id);
+  };
   return (
     <RoomWrap
-      ref={roomRef}
-      onMouseLeave={() => {
-        if (roomRef.current) {
-          setIsReady(false);
-          roomRef.current.classList.replace("Room__Ready", "Room__Default");
-        }
-      }}
+    // ref={roomRef}
+    // onMouseLeave={() => {
+    //   if (roomRef.current) {
+    //     setIsReady(false);
+    //     roomRef.current.classList.replace("Room__Ready", "Room__Default");
+    //   }
+    // }}
     >
       <RoomDiv
-        id={getId(id, "room")}
-        onClick={() => {
-          if (roomRef.current) {
-            if (
-              !roomRef.current.classList.replace("Room__Default", "Room__Ready")
-            ) {
-              roomRef.current.classList.add("Room__Ready");
-            }
-          }
-          setIsReady(true);
-        }}
+      // id={getId(id, "room")}
+      // onClick={() => {
+      //   if (roomRef.current) {
+      //     if (
+      //       !roomRef.current.classList.replace("Room__Default", "Room__Ready")
+      //     ) {
+      //       roomRef.current.classList.add("Room__Ready");
+      //     }
+      //   }
+      //   setIsReady(true);
+      // }}
       >
         <WrapDiv>
           <InfoDiv>
             <TitleH1>{name}</TitleH1>
             <CategoryDiv>{studyCategoryDto.name}</CategoryDiv>
           </InfoDiv>
-          <SignupButton>가입하기</SignupButton>
+
+          <SignupButton isSigned={isSigned} onClick={signupHandler}>
+            {isSigned ? "가입완료" : "가입하기"}
+          </SignupButton>
         </WrapDiv>
         <Contour />
         <DetailDiv>
@@ -109,14 +126,19 @@ const InfoDiv = styled.div`
   flex-direction: column;
   gap: 10px;
 `;
-const SignupButton = styled.button`
+type SignupButtonProps = {
+  isSigned: boolean;
+};
+const SignupButton = styled.button<SignupButtonProps>`
   border-radius: 20px;
   padding: 5px 8px;
   border: none;
-  background-color: ${COLOR.DARKMAIN};
+  background-color: ${(props) => (props.isSigned ? "#0ca230" : COLOR.DARKMAIN)};
   color: #fff;
   font-weight: 600;
+  pointer-events: ${(props) => props.isSigned && "none"};
 `;
+
 const TitleH1 = styled.h1`
   font-size: 1.2rem;
   font-weight: 600;
