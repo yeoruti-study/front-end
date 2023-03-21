@@ -59,7 +59,7 @@ const SubjectContainer = () => {
 
             <Button
               width="150px"
-              style={{ "border-radius": "30px" }}
+              style={{ borderRadius: "30px" }}
               onClick={addNewSubject}
             >
               추가하기
