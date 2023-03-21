@@ -10,9 +10,10 @@ type StudyRoomCategoryProps = {
   // inputRef: React.MutableRefObject<HTMLInputElement>;
   name: string;
   wasSubmitted: boolean;
+  formKey: string;
 };
 const StudyRoomCategory = (props: StudyRoomCategoryProps) => {
-  const { name, wasSubmitted } = props;
+  const { name, wasSubmitted, formKey } = props;
   const [value, setValue] = useState("");
   const errorMessage = getFieldError(value);
   const [touched, setTouched] = React.useState(false);
@@ -30,7 +31,7 @@ const StudyRoomCategory = (props: StudyRoomCategoryProps) => {
         id={`${name}-input`}
         className="Study__Add__Input"
         placeholder={name}
-        name={name}
+        name={formKey}
         onChange={(e) => setValue(e.currentTarget.value)}
         onBlur={() => setTouched(true)}
         required
@@ -43,7 +44,9 @@ const StudyRoomCategory = (props: StudyRoomCategoryProps) => {
         </option>
         {status === "success" ? (
           data?.data.data.map((item, idx) => (
-            <option key={item.id}>{item.name}</option>
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
           ))
         ) : (
           <></>

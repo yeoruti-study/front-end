@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import categoryAddPopupAtom from "../../../atoms/categoryAdd";
 import { useStudyCategoryPost } from "../../../hooks/react_query_hooks/useStudyCategory";
+import { useStudyRoomPost } from "../../../hooks/react_query_hooks/useStudyRoom";
 import COLOR from "../../../style/color";
 import getFieldError from "../../../utils/getFieldError";
 import localConsole from "../../../utils/localConsole";
@@ -13,7 +14,7 @@ import StudyRoomFormItem from "./StudyRoomFormItem";
 const StudyRoomAdd = () => {
   const [wasSubmitted, setWasSubmitted] = useState(false);
   const isCategoryAddPopupOpen = useRecoilValue(categoryAddPopupAtom);
-  const onSubmit = useStudyCategoryPost();
+  const onSubmit = useStudyRoomPost();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -25,11 +26,19 @@ const StudyRoomAdd = () => {
     );
 
     setWasSubmitted(true);
-    // if (formIsValid) {
-    //   // TODO: API 연결
-    //   onSubmit(String(fieldValues.))
-    //   localConsole?.log("form submitted", fieldValues);
-    // }
+    if (formIsValid) {
+      // TODO: API 연결
+
+      localConsole?.log("form submitted", fieldValues);
+      onSubmit({
+        name: String(fieldValues["name"]),
+        studyCategoryId: String(fieldValues["studyCategoryId"]),
+        maximumNumberOfPeople:
+          Number(fieldValues["maximumNumberOfPeople"]) || undefined,
+        studyGoalTime: undefined,
+        roomPassword: undefined,
+      });
+    }
   }
 
   const StudyRoomAddFieldNames = [
@@ -65,6 +74,7 @@ const StudyRoomAdd = () => {
         <StudyRoomCategory
           name="스터디룸 카테고리"
           wasSubmitted={wasSubmitted}
+          formKey={"studyCategoryId"}
         />
 
         <StudyRoomSubmitWrap>
@@ -87,6 +97,9 @@ const StudyRoomAddForm = styled.form`
   grid-template-rows: 5.6875rem 5.6875rem 5.6875rem;
   grid-row-gap: 1.875rem;
   grid-column-gap: 1.875rem;
+  width: 100%;
+  max-width: 800px;
+  max-height: 400px;
   /* padding: 4.375rem 2.25rem 2.25rem 2.25rem; */
   padding: 20px;
   border-radius: 30px;
