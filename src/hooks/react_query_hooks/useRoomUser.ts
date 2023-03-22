@@ -10,6 +10,7 @@ import { useQuery, useMutation } from "react-query";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import myStudyRoomSetAtom from "../../atoms/myStudyRoom";
 import curStudyRoomAtom from "../../atoms/curStudyRoom";
+import { useEffect } from "react";
 
 export const useRoomUserPost = () => {
   const queryState = useSetResource({
@@ -69,9 +70,12 @@ export const useRoomUserStudyRoomGet = () => {
   // const onClick = () => {
   //   queryState.refetch;
   // };
-  if (status === "success" && data) {
-    const idList = data?.data.data.map((item) => item.id);
-    setMyStudyRoomSet(new Set(idList));
-  }
+  useEffect(() => {
+    if (status === "success" && data) {
+      const idList = data?.data.data.map((item) => item.id);
+      setMyStudyRoomSet(new Set(idList));
+    }
+  }, [status]);
+
   return queryState;
 };
