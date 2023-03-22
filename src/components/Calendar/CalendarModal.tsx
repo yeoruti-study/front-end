@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useEffect, useRef } from 'react';
 import goalState from '../../atoms/goal';
 import styled from 'styled-components';
 import Input from "../../common/Input";
@@ -6,6 +6,8 @@ import COLOR from '../../style/color';
 import Button from '../../common/Button';
 import { DateSelectArg } from '@fullcalendar/core';
 import { useRecoilState } from 'recoil';
+import { useStudyGoalPost } from '../../hooks/react_query_hooks/useStudyGoal';
+import { StudyGoalType } from '../../api/studyGoal/types/studyGoalType';
 
 type CalendarModalProps = {
   selectInfo?: DateSelectArg,
@@ -24,47 +26,53 @@ const initialGoal = {
 
 const CalendarModal = ({ selectInfo, close }: CalendarModalProps) => {
   const [goal, setGoal] = useRecoilState(goalState);
-  const [goalTime, setGoalTime] = useState({ hour: 0, min: 0});
+  const { create } = useStudyGoalPost();
+  const studyGoalRef = useRef<HTMLInputElement []|HTMLTextAreaElement[]>([]);
 
   useEffect(() => {
     setGoal(prev => ({ ...prev, startDate: new Date(selectInfo!.startStr), endDate: new Date(selectInfo!.endStr) }));
     console.log(goal);
   }, []);
 
-  const onChange = (e: ChangeEvent<any>) => {
-    setGoal(prev => ({ ...prev, [e.target.id]: e.target.value }));
-    if (e.target.id === 'hour') setGoalTime(prev => ({ ...prev, hour: e.target.value }));
-    else if (e.target.id === 'min') setGoalTime(prev => ({ ...prev, min: e.target.value }));
-  }
+  // Input Dom의 값 저장 및 가공
+  const onSave = () => {
+    let newStudyGoal: any = {};
+    studyGoalRef.current.forEach(ele => {
+      if (ele.id !== 'hour' && ele.id !== 'min')
+        newStudyGoal = { ...newStudyGoal, [ele.id]: ele.value }
+    });
+    const formattedGoalTime = 'PT' + studyGoalRef.current[2].value.toString() + 'H' + studyGoalRef.current[3].value.toString() + 'M';
+    newStudyGoal = { ...newStudyGoal, goalTime: formattedGoalTime, userStudySubjectId: '1e347c2e-4f17-4838-ae07-49be14ebc60b' };
+    return newStudyGoal;
+  };
 
+  // 실제 공부목표 생성
   const onCreate = () => {
+    const newStudyGoal:StudyGoalType = onSave();
+    console.log(newStudyGoal);
     let calendarApi = selectInfo!.view.calendar;
     calendarApi.unselect();
-    const formattedGoalTime = 'PT' + goalTime.hour.toString() + 'H' + goalTime.min.toString() + 'M';
-    console.log(formattedGoalTime);
-    setGoal(prev => ({ ...prev, goalTime: formattedGoalTime}));
-    // api 요청
-    console.log(goal);
-    calendarApi.addEvent({ ...goal, start: goal.startDate, end: goal.endDate });
+    create(newStudyGoal);
+    //calendarApi.addEvent({ ...goal, start: goal.startDate, end: goal.endDate });
     setGoal(initialGoal);
     close();
-  }
+  };
 
   return (
     <CalendarModalContainer>
       <Label>목표 이름</Label>
-      <Input id='title' onChange={onChange} />
+      <Input id='title' ref={(ref:HTMLInputElement)=>studyGoalRef.current[0] = ref}/>
       <Label>설명</Label>
-      <DetailTextArea  id='detail' onChange={onChange}/>
+      <DetailTextArea  id='detail' ref={(ref:HTMLTextAreaElement)=>studyGoalRef.current[1] = ref}/>
       <Label>목표 시간</Label>
       <div style={{display: 'flex', justifyContent: 'space-between'}} >
-        <Input id='hour' type='number' placeholder='시' width='48%' min={0} onChange={onChange} />
-        <Input id='min' type='number' placeholder='분' width='48%' min={0} max={59} onChange={onChange} />
+        <Input id='hour' type='number' placeholder='시' width='48%' min={0} ref={(ref:HTMLInputElement)=>studyGoalRef.current[2] = ref}/>
+        <Input id='min' type='number' placeholder='분' width='48%' min={0} max={59} ref={(ref:HTMLInputElement)=>studyGoalRef.current[3] = ref}/>
       </div>
       <Label>시작 날짜</Label>
-      <Input id='startDate'  defaultValue={selectInfo?.startStr} onChange={onChange} />
+      <Input id='startDate'  defaultValue={selectInfo?.startStr} ref={(ref:HTMLInputElement)=>studyGoalRef.current[4] = ref} />
       <Label>종료 날짜</Label>
-      <Input  id='endDate' defaultValue={selectInfo?.endStr} onChange={onChange}/>
+      <Input  id='endDate' defaultValue={selectInfo?.endStr} ref={(ref:HTMLInputElement)=>studyGoalRef.current[5] = ref}/>
       <Label>과목 선택(select)</Label>
       <select>
         <option value=''></option>

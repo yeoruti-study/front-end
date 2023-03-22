@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {
   EventApi,
   DateSelectArg,
@@ -14,14 +14,16 @@ import CalendarModal from './CalendarModal';
 import { useStudyGoalAllGet } from '../../hooks/react_query_hooks/useStudyGoal';
 
 const FullCalendar = () => {
-  const [eventList, setEventList] = useState([]);
+  const [eventList, setEventList] = useState<any []>([]);
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);   // 현재 화면에 보여지는 모든 이벤트들이 담긴 배열
   const [selectInfo, setSelectInfo] = useState<DateSelectArg>();        // 현재 선택된 정보를 포함한 캘린더 상태
   const [modal, setModal] = useState(false);                            // 모달 플로팅을 위한 flag
-  
   const { status, data } = useStudyGoalAllGet();
-  console.log(data);
-  
+
+  useEffect(() => {
+    if (data) setEventList(data.data.data.map((e: any) => ({ ...e, start: e.startDate, end: e.endDate })));
+  }, [data]);
+
   const handleEvents = (events: EventApi[]) => {
     setCurrentEvents(events);
   };
