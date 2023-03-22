@@ -1,38 +1,16 @@
+// deprecated
+
 import React from "react";
 import styled from "styled-components";
 import { StudyRoomType } from "../../api/studyRoom/types/studyRoomType";
 import StudyRoomItem from "./StudyRoomItem";
-
-export interface RoomType {
-  id: string;
-  name: string;
-  studyCategoryDto: {
-    id: string;
-    name: string;
-    description: string;
-  };
-  maximumNumberOfPeople: number;
-  studyGoalTime?: string;
-  roomPassword?: string;
-  masterUserId?: string;
-  createdAt: string;
-  updatedAt?: string;
-  masterUserUsername: string;
-  masterUserProfileName: string;
-}
 
 interface ListProps {
   roomList: StudyRoomType[];
 }
 const StudyList = (props: ListProps) => {
   const { roomList } = props;
-  return (
-    <ListUl>
-      {roomList.map((item, idx) => (
-        <StudyRoomItem roomItemData={item} key={item.id} />
-      ))}
-    </ListUl>
-  );
+  return <ListUl></ListUl>;
 };
 
 export default StudyList;

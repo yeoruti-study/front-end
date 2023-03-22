@@ -1,6 +1,8 @@
+//deprecated
+
 import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
-import StudyList, { RoomType } from "../../components/StudyRoom/StudyList";
+import StudyList from "../../components/StudyRoom/StudyList";
 import StudyModal from "../../components/StudyRoom/StudyModal/StudyModal";
 import { useRoomUserAllGet } from "../../hooks/react_query_hooks/useRoomUser";
 import { useStudyRoomAllGet } from "../../hooks/react_query_hooks/useStudyRoom";
