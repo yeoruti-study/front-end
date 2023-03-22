@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import curStudyRoomAtom from "../../atoms/curStudyRoom";
 import { myStudyRoomArraySelector } from "../../atoms/myStudyRoom";
@@ -12,7 +12,13 @@ import {
 import COLOR from "../../style/color";
 const MyStudyRoomContainer = () => {
   // useRoomUserStudyRoomGet();
-  useEffect(() => {}, []);
+  const setCurStudyRoom = useSetRecoilState(curStudyRoomAtom);
+  useEffect(() => {
+    const curStudyRoomSession = sessionStorage.getItem("my_study_room");
+    if (curStudyRoomSession) {
+      setCurStudyRoom({ ...JSON.parse(curStudyRoomSession) });
+    }
+  }, []);
   return (
     <StudyRoomLayout
       Nav={MyStudyRoomNav}
@@ -73,7 +79,13 @@ export const MyStudyRoomDropDown = () => {
       >
         {data?.data.data.map((item, idx) => {
           return (
-            <li key={item.id} onClick={() => setCurStudyRoom({ ...item })}>
+            <li
+              key={item.id}
+              onClick={() => {
+                sessionStorage.setItem("my_study_room", JSON.stringify(item));
+                setCurStudyRoom({ ...item });
+              }}
+            >
               {item.name}
             </li>
           );
@@ -133,27 +145,28 @@ const MyNavData = [
   },
 ];
 export const MyStudyRoomNav = () => {
+  const { id } = useRecoilValue(curStudyRoomAtom);
   const navigate = useNavigate();
   const { type } = useParams();
+  const clickHandler = (url: string) => {
+    if (id === "") {
+      alert("스터디룸을 먼저 선택하세요");
+      return;
+    } else {
+      navigate(url);
+    }
+  };
   return (
     <NavUl>
       {MyNavData.map((item, idx) => (
         <NavItemLi
           key={`myStudyRoomNav-${item.type}`}
           selected={item.type === String(type)}
-          onClick={() => navigate(item.url)}
+          onClick={() => clickHandler(item.url)}
         >
           {item.name}
         </NavItemLi>
       ))}
-      {/* <li onClick={() => navigate("/studyroom/my-studyroom/home")}>홈</li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/attendance")}>
-        출석부
-      </li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/rank")}>랭킹</li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/chat")}>채팅</li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/invite")}>초대</li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/settings")}>설정</li> */}
     </NavUl>
   );
 };
@@ -184,7 +197,10 @@ export const MyStudyRoomMemberStatus = () => {
     return (
       <MemberUl>
         {data.data.data.map((item) => (
-          <MyStudyRoomMemberItem name={item.profileName} />
+          <MyStudyRoomMemberItem
+            name={item.profileName}
+            key={`${curStudyRoom}_member_${item.id}`}
+          />
         ))}
         {/* <MyStudyRoomMemberItem name={"최용재"} />
         <MyStudyRoomMemberItem name={"하정수"} />
