@@ -2,6 +2,7 @@ import studyGoalRequest from ".";
 import {
   createRequest,
   createRequestWithQuery,
+  createResource,
   createResourceWithQuery,
 } from "../../hooks/react_query_hooks/useResource";
 
@@ -12,7 +13,7 @@ export const STUDY_GOAL_POST = createRequest({
 
 export const STUDY_GOAL_ALL_GET = createResourceWithQuery({
   key: ["STUDY_GOAL_ALL_GET"],
-  fetcher: studyGoalRequest.StudyGoalAllGet,
+  fetcher: (userId: string) => studyGoalRequest.StudyGoalAllGet(userId),
 });
 
 export const STUDY_GOAL_ONE_GET = createResourceWithQuery({

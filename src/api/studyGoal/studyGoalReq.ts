@@ -7,7 +7,8 @@ import {
   StudyGoalDeleteRequest,
   StudyGoalByUserSujectGetRequest,
   StudyGoalByUserSubjectGetResponse,
-  StudyGoalAllGetResponse
+  StudyGoalAllGetResponse,
+  StudyGoalAllGetRequest
 } from './types/studyGoalAPI';
 import RequestCore from "../common/RequestCore";
 
@@ -26,7 +27,9 @@ class StudyGoalAPI extends RequestCore {
   };
 
   public StudyGoalAllGet = async (userId: string) => {
-    const response = await this.apiRequest<undefined, StudyGoalAllGetResponse>({
+    const response = await this.apiRequest<
+      undefined,
+      StudyGoalAllGetResponse>({
       requestMethod: "GET",
       url: `list/user/${userId}`,
     });
@@ -36,7 +39,7 @@ class StudyGoalAPI extends RequestCore {
 
   public StudyGoalOneGet = async (studyGoalId: string) => {
     const response = await this.apiRequest<
-      StudyGoalOneGetRequest,
+      undefined,
       StudyGoalOneGetResponse
     >({
       requestMethod: "GET",
@@ -47,9 +50,9 @@ class StudyGoalAPI extends RequestCore {
   };
 
 
-  public StudyGoalByUserSubjectIdOneGet = async (userStudySubjectId: string) => {
+  public StudyGoalByUserSubjectIdOneGet = async (userStudySubjectId:string) => {
     const response = await this.apiRequest<
-      StudyGoalByUserSujectGetRequest,
+      undefined,
       StudyGoalByUserSubjectGetResponse
     >({
       requestMethod: "GET",
@@ -74,7 +77,7 @@ class StudyGoalAPI extends RequestCore {
   
   public StudyGoalDelete = async (studyGoalId: string) => {
     const response = await this.apiRequest<
-      StudyGoalDeleteRequest,
+      undefined,
       StudyGoalDeleteResponse
     >({
       requestMethod: "DELETE",
