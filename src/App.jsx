@@ -10,11 +10,13 @@ import StudyRoom from "./pages/StudyRoom";
 import MyStudyRoom from "./pages/MyStudyRoom";
 import PublicRoute from "./components/Router/PublicRoute";
 import PrivateRoute from "./components/Router/PrivateRoute";
+import Navigation from "./components/Navigation/Navigation";
 
 function App() {
   return (
     <RecoilRoot>
       <GlobalStyles />
+      <Navigation />
       <Routes>
         <Route
           path="/"
