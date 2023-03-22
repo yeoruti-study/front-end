@@ -15,6 +15,7 @@ const StudyRoomList = () => {
         ))}
       </ListUl>
     );
+
   } else {
     return <></>;
   }
@@ -38,3 +39,4 @@ const ListUl = styled.ul`
     transform: translateX(0);
   } */
 `;
+

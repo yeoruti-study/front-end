@@ -23,6 +23,7 @@ const OAuthContainer = () => {
   useEffect(() => {
     const origin = location.state?.from?.pathname || "/home";
     if (status === "success") navigate(origin);
+
   }, [status]);
   return <div>oauth handler page</div>;
 };

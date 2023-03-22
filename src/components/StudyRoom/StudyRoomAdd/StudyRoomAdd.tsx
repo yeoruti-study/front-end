@@ -76,7 +76,6 @@ const StudyRoomAdd = () => {
           wasSubmitted={wasSubmitted}
           formKey={"studyCategoryId"}
         />
-
         <StudyRoomSubmitWrap>
           <StudyRoomFormButton>추가하기</StudyRoomFormButton>
         </StudyRoomSubmitWrap>
@@ -100,6 +99,7 @@ const StudyRoomAddForm = styled.form`
   width: 100%;
   max-width: 800px;
   max-height: 400px;
+
   /* padding: 4.375rem 2.25rem 2.25rem 2.25rem; */
   padding: 20px;
   border-radius: 30px;

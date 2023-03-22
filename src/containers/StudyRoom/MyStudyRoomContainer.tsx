@@ -50,6 +50,7 @@ const dummyStudyRoom = [
 export const MyStudyRoomDropDown = () => {
   const { status, data } = useRoomUserStudyRoomGet();
   const [curStudyRoom, setCurStudyRoom] = useRecoilState(curStudyRoomAtom);
+
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [dropdownAni, setDropdownAni] = useState(false);
   const repeatRef = useRef<NodeJS.Timeout | null>(null);
@@ -68,6 +69,7 @@ export const MyStudyRoomDropDown = () => {
   }, [dropdownVisible]);
 
   return dropdownAni && status === "success" && data!.data.data.length > 0 ? (
+
     <article
       style={{ overflow: "hidden", borderRadius: "10px", position: "relative" }}
     >
@@ -156,6 +158,7 @@ export const MyStudyRoomNav = () => {
       navigate(url);
     }
   };
+
   return (
     <NavUl>
       {MyNavData.map((item, idx) => (

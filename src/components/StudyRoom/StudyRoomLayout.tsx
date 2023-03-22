@@ -4,6 +4,7 @@ import styled from "styled-components";
 import userInfoAtom from "../../atoms/userInfo";
 import COLOR from "../../style/color";
 import localConsole from "../../utils/localConsole";
+
 type StudyRoomLayoutProps = {
   Main: () => JSX.Element;
   Nav: () => JSX.Element;
@@ -15,6 +16,7 @@ const StudyRoomLayout = (props: StudyRoomLayoutProps) => {
   // userInfoAtom update test
   // const userInfo = useRecoilValue(userInfoAtom);
   // localConsole?.log(userInfo);
+
   return (
     <StudyRoomLayout.Wrap>
       <section className="item">
@@ -58,6 +60,7 @@ const LayoutContainer = styled.section`
       background-color: ${COLOR.DARKMAIN};
       -webkit-box-shadow: 2px 0px 10px -2px rgba(0, 0, 0, 0.7);
       box-shadow: 2px 0px 10px -2px rgba(0, 0, 0, 0.4);
+
       section {
         padding: 20px 0;
         border-bottom: 1px solid ${COLOR.MAIN};
