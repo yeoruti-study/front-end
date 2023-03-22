@@ -9,11 +9,10 @@ interface DefaultResultRes {
 
 export interface StudyRoomPostRequest {
   name: string;
-  studyCategoryDto: { id: string };
+  studyCategoryId: string;
   maximumNumberOfPeople?: number;
-  studyGoalTime: string;
-  roomPassword: string;
-  masterUserId: string;
+  studyGoalTime?: string;
+  roomPassword?: string;
 }
 
 export interface StudyRoomPostResponse extends DefaultResultRes {}

@@ -8,12 +8,8 @@ interface DefaultResultRes {
 }
 
 export interface RoomUserPostRequest {
-  userDto: {
-    id: string;
-  };
-  studyRoomDto: {
-    id: string;
-  };
+  userId: string;
+  studyRoomId: string;
 }
 
 export interface RoomUserPostResponse extends DefaultResultRes {}

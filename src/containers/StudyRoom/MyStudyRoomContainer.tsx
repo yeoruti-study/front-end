@@ -1,12 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import myStudyRoomAtom from "../../atoms/myStudyRoom";
+import curStudyRoomAtom from "../../atoms/curStudyRoom";
+import { myStudyRoomArraySelector } from "../../atoms/myStudyRoom";
 import StudyRoomLayout from "../../components/StudyRoom/StudyRoomLayout";
-import { useRoomUserStudyRoomGet } from "../../hooks/react_query_hooks/useRoomUser";
+import {
+  useRoomUserAllGet,
+  useRoomUserStudyRoomGet,
+} from "../../hooks/react_query_hooks/useRoomUser";
 import COLOR from "../../style/color";
 const MyStudyRoomContainer = () => {
+  // useRoomUserStudyRoomGet();
+  const setCurStudyRoom = useSetRecoilState(curStudyRoomAtom);
+  useEffect(() => {
+    const curStudyRoomSession = sessionStorage.getItem("my_study_room");
+    if (curStudyRoomSession) {
+      setCurStudyRoom({ ...JSON.parse(curStudyRoomSession) });
+    }
+  }, []);
   return (
     <StudyRoomLayout
       Nav={MyStudyRoomNav}
@@ -37,7 +49,8 @@ const dummyStudyRoom = [
 ];
 export const MyStudyRoomDropDown = () => {
   const { status, data } = useRoomUserStudyRoomGet();
-  const [curStudyRoom, setCurStudyRoom] = useRecoilState(myStudyRoomAtom);
+  const [curStudyRoom, setCurStudyRoom] = useRecoilState(curStudyRoomAtom);
+
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [dropdownAni, setDropdownAni] = useState(false);
   const repeatRef = useRef<NodeJS.Timeout | null>(null);
@@ -55,7 +68,8 @@ export const MyStudyRoomDropDown = () => {
     }
   }, [dropdownVisible]);
 
-  return dropdownAni ? (
+  return dropdownAni && status === "success" && data!.data.data.length > 0 ? (
+
     <article
       style={{ overflow: "hidden", borderRadius: "10px", position: "relative" }}
     >
@@ -65,16 +79,15 @@ export const MyStudyRoomDropDown = () => {
           dropdownVisible ? "Dropdown__Slide__In" : "Dropdown__Slide__Out"
         }
       >
-        {dummyStudyRoom.map((item, idx) => {
-          return (
-            <li key={item.id} onClick={() => setCurStudyRoom(item.name)}>
-              {item.name}
-            </li>
-          );
-        })}
         {data?.data.data.map((item, idx) => {
           return (
-            <li key={item.id} onClick={() => setCurStudyRoom(item.name)}>
+            <li
+              key={item.id}
+              onClick={() => {
+                sessionStorage.setItem("my_study_room", JSON.stringify(item));
+                setCurStudyRoom({ ...item });
+              }}
+            >
               {item.name}
             </li>
           );
@@ -83,7 +96,9 @@ export const MyStudyRoomDropDown = () => {
     </article>
   ) : (
     <DropdownDiv onClick={onDropdownClick}>
-      <span>{curStudyRoom}</span>
+      <span>
+        {curStudyRoom.id === "" ? "스터디룸 선택" : curStudyRoom.name}
+      </span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -132,27 +147,29 @@ const MyNavData = [
   },
 ];
 export const MyStudyRoomNav = () => {
+  const { id } = useRecoilValue(curStudyRoomAtom);
   const navigate = useNavigate();
   const { type } = useParams();
+  const clickHandler = (url: string) => {
+    if (id === "") {
+      alert("스터디룸을 먼저 선택하세요");
+      return;
+    } else {
+      navigate(url);
+    }
+  };
+
   return (
     <NavUl>
       {MyNavData.map((item, idx) => (
         <NavItemLi
           key={`myStudyRoomNav-${item.type}`}
           selected={item.type === String(type)}
-          onClick={() => navigate(item.url)}
+          onClick={() => clickHandler(item.url)}
         >
           {item.name}
         </NavItemLi>
       ))}
-      {/* <li onClick={() => navigate("/studyroom/my-studyroom/home")}>홈</li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/attendance")}>
-        출석부
-      </li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/rank")}>랭킹</li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/chat")}>채팅</li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/invite")}>초대</li>
-      <li onClick={() => navigate("/studyroom/my-studyroom/settings")}>설정</li> */}
     </NavUl>
   );
 };
@@ -174,14 +191,28 @@ export const NavItemLi = styled.li<NavItemProps>`
   }
 `;
 export const MyStudyRoomMemberStatus = () => {
-  return (
-    <MemberUl>
-      <MyStudyRoomMemberItem name={"최용재"} />
-      <MyStudyRoomMemberItem name={"하정수"} />
-      <MyStudyRoomMemberItem name={"정채은"} />
-      <MyStudyRoomMemberItem name={"이채민"} />
-    </MemberUl>
-  );
+  const curStudyRoom = useRecoilValue(curStudyRoomAtom);
+  const { status, data, refetch } = useRoomUserAllGet();
+  useEffect(() => {
+    refetch();
+  }, [curStudyRoom]);
+  if (status === "success" && data) {
+    return (
+      <MemberUl>
+        {data.data.data.map((item) => (
+          <MyStudyRoomMemberItem
+            name={item.profileName}
+            key={`${curStudyRoom}_member_${item.id}`}
+          />
+        ))}
+        {/* <MyStudyRoomMemberItem name={"최용재"} />
+        <MyStudyRoomMemberItem name={"하정수"} />
+        <MyStudyRoomMemberItem name={"정채은"} />
+        <MyStudyRoomMemberItem name={"이채민"} /> */}
+      </MemberUl>
+    );
+  }
+  return <></>;
 };
 type MemberItemProps = {
   name: string;
@@ -226,7 +257,7 @@ export const MyHome = () => {
 
 const MyHomeNotification = () => {
   return (
-    <div style={{ padding: "5px" }}>
+    <div style={{ padding: "5px", width: "100%" }}>
       <MyHomeNotificationDiv>공지</MyHomeNotificationDiv>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -7,9 +7,11 @@ import CategoryAddPopup from "../../components/StudyRoom/CategoryAddPopup/Catego
 import StudyRoomAdd from "../../components/StudyRoom/StudyRoomAdd/StudyRoomAdd";
 import StudyRoomLayout from "../../components/StudyRoom/StudyRoomLayout";
 import StudyRoomList from "../../components/StudyRoom/StudyRoomList";
+import { useRoomUserStudyRoomGet } from "../../hooks/react_query_hooks/useRoomUser";
 import { NavItemLi, NavUl } from "./MyStudyRoomContainer";
 
 const StudyRoomContainer = () => {
+  useRoomUserStudyRoomGet();
   const isCategoryAddPopupOpen = useRecoilValue(categoryAddPopupAtom);
   return (
     <StudyRoomContainerWrap>

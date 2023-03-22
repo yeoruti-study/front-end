@@ -1,3 +1,4 @@
+// deprecated
 import React from "react";
 import styled from "styled-components";
 import { dummyData } from "../../containers/StudyRoom/StudyRoomDetail";
@@ -10,22 +11,22 @@ const StudyUserList = (props: ModalUserListProps) => {
   const { userList } = props;
   return (
     <ListUl>
-      {userList.map((item, idx) => {
+      {/* {userList.map((item, idx) => {
         const { username, roles, profileImagePath } = item.userDto;
         return (
-          <ListLi>
-            {/* <img
+          <ListLi> */}
+      {/* <img
               src={profileImagePath || ""}
               alt={`${username} 프로필 이미지`}
             /> */}
-            <ProfileImg></ProfileImg>
+      {/* <ProfileImg></ProfileImg>
             <div>
               <span>{username}</span>
               <span>{roles}</span>
             </div>
           </ListLi>
         );
-      })}
+      })} */}
     </ListUl>
   );
 };
