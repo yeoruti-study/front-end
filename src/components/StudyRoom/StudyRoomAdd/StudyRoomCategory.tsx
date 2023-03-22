@@ -14,8 +14,6 @@ type StudyRoomCategoryProps = {
 };
 const StudyRoomCategory = (props: StudyRoomCategoryProps) => {
   const { name, wasSubmitted, formKey } = props;
-};
-
   const [value, setValue] = useState("");
   const errorMessage = getFieldError(value);
   const [touched, setTouched] = React.useState(false);
