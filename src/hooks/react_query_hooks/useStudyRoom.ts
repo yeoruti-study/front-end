@@ -24,6 +24,7 @@ export const useStudyRoomPost = () => {
     });
   };
 
+  if (queryState.status === "success") alert("스터디룸 생성이 완료되었습니다");
   return onClick;
 };
 export const useStudyRoomAllGet = () => {
