@@ -124,6 +124,7 @@ const DetailDiv = styled.div`
 const InfoDiv = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
 `;
 type SignupButtonProps = {
