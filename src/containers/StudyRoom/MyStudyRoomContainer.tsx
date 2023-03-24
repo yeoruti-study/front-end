@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import curStudyRoomAtom from "../../atoms/curStudyRoom";
-import { myStudyRoomArraySelector } from "../../atoms/myStudyRoom";
 import StudyRoomLayout from "../../components/StudyRoom/StudyRoomLayout";
 import {
   useRoomUserAllGet,
@@ -11,7 +10,6 @@ import {
 } from "../../hooks/react_query_hooks/useRoomUser";
 import COLOR from "../../style/color";
 const MyStudyRoomContainer = () => {
-  // useRoomUserStudyRoomGet();
   const setCurStudyRoom = useSetRecoilState(curStudyRoomAtom);
   useEffect(() => {
     const curStudyRoomSession = sessionStorage.getItem("my_study_room");
@@ -29,24 +27,6 @@ const MyStudyRoomContainer = () => {
   );
 };
 
-const dummyStudyRoom = [
-  {
-    name: "item1",
-    id: "1",
-  },
-  {
-    name: "item2",
-    id: "2",
-  },
-  {
-    name: "item3",
-    id: "3",
-  },
-  {
-    name: "item4",
-    id: "4",
-  },
-];
 export const MyStudyRoomDropDown = () => {
   const { status, data } = useRoomUserStudyRoomGet();
   const [curStudyRoom, setCurStudyRoom] = useRecoilState(curStudyRoomAtom);
@@ -69,7 +49,6 @@ export const MyStudyRoomDropDown = () => {
   }, [dropdownVisible]);
 
   return dropdownAni && status === "success" && data!.data.data.length > 0 ? (
-
     <article
       style={{ overflow: "hidden", borderRadius: "10px", position: "relative" }}
     >
@@ -177,19 +156,7 @@ export const MyStudyRoomNav = () => {
 type NavItemProps = {
   selected: boolean;
 };
-export const NavItemLi = styled.li<NavItemProps>`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 40px;
-  border-radius: 10px;
-  background-color: ${(props) => (props.selected ? COLOR.MAIN : "none")};
-  /* opacity: ${(props) => (props.selected ? "0.5" : "1")}; */
-  padding: 10px;
-  &:hover {
-    background-color: ${(props) => (props.selected ? "none" : "#B5CDA3")};
-  }
-`;
+
 export const MyStudyRoomMemberStatus = () => {
   const curStudyRoom = useRecoilValue(curStudyRoomAtom);
   const { status, data, refetch } = useRoomUserAllGet();
@@ -205,10 +172,6 @@ export const MyStudyRoomMemberStatus = () => {
             key={`${curStudyRoom}_member_${item.id}`}
           />
         ))}
-        {/* <MyStudyRoomMemberItem name={"최용재"} />
-        <MyStudyRoomMemberItem name={"하정수"} />
-        <MyStudyRoomMemberItem name={"정채은"} />
-        <MyStudyRoomMemberItem name={"이채민"} /> */}
       </MemberUl>
     );
   }
@@ -263,32 +226,22 @@ const MyHomeNotification = () => {
   );
 };
 
-const MyHomeNotificationDiv = styled.div`
-  /* position: fixed;
-  top: 0; */
-  width: 100%;
-  height: 40px;
-  padding: 5px;
-  border-radius: 10px;
-  background-color: rgba(1, 1, 1, 0.07);
-`;
 export default MyStudyRoomContainer;
 
 const DropdownUl = styled.ul`
-  border-radius: 10px;
   width: 100%;
-  overflow: hidden;
+  border-radius: 10px;
   background-color: ${COLOR.MAIN};
-  z-index: 1000;
+  overflow: hidden;
   li {
     display: flex;
     align-items: center;
     width: 100%;
     height: 40px;
     padding: 0 10px;
-
+    cursor: pointer;
     &:hover {
-      background-color: ${(props) => "#B5CDA3"};
+      background-color: #b5cda3;
     }
   }
 `;
@@ -297,19 +250,19 @@ const DropdownDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid ${COLOR.MAIN};
-  border-radius: 10px;
   width: 100%;
   height: 40px;
-  background-color: ${COLOR.MAIN};
   padding: 0 10px;
+  border: 1px solid ${COLOR.MAIN};
+  border-radius: 10px;
+  background-color: ${COLOR.MAIN};
 
   .Dropdown__Chevron__Down {
-    color: #fff;
-    object-fit: contain;
-    height: 20px;
-    font-weight: 200;
     width: auto;
+    height: 20px;
+    color: #fff;
+    font-weight: 200;
+    object-fit: contain;
   }
 `;
 
@@ -321,17 +274,41 @@ const MemberUl = styled.ul`
   border-radius: 4px;
 `;
 const MemberLi = styled.li`
-  width: 100%;
-  height: 40px;
-  padding: 3px 10px;
   position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  height: 40px;
+  padding: 3px 10px;
+
   .Member__Item__Status {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background-color: green;
   }
+`;
+export const NavItemLi = styled.li<NavItemProps>`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: ${(props) => (props.selected ? COLOR.MAIN : "none")};
+  /* opacity: ${(props) => (props.selected ? "0.5" : "1")}; */
+  &:hover {
+    background-color: ${(props) => (props.selected ? "none" : "#B5CDA3")};
+  }
+`;
+
+const MyHomeNotificationDiv = styled.div`
+  /* position: fixed;
+  top: 0; */
+  width: 100%;
+  height: 40px;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: rgba(1, 1, 1, 0.07);
 `;
