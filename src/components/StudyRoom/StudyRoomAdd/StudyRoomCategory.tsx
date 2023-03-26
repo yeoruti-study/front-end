@@ -40,7 +40,7 @@ const StudyRoomCategory = (props: StudyRoomCategoryProps) => {
             displayErrorMessage ? `${name}-error` : undefined
           }
         >
-          <option value="" selected disabled style={{ display: "none" }}>
+          <option value="" style={{ display: "none" }}>
             카테고리 선택
           </option>
           {status === "success" ? (
