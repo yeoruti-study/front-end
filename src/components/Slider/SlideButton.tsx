@@ -47,7 +47,7 @@ interface ButtonProps {
 }
 const SlideButtonWrapper = styled.div<ButtonProps>`
   position: absolute;
-  z-index: 100;
+  z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,8 +64,8 @@ const SlideButtonWrapper = styled.div<ButtonProps>`
   }
 `;
 const LeftButtonWrapper = styled(SlideButtonWrapper)`
-  left: -70px;
+  left: 27%;
 `;
 const RightButtonWrapper = styled(SlideButtonWrapper)`
-  right: -70px;
+  right: 27%;
 `;
