@@ -1,13 +1,12 @@
-import { useEffect, useRef } from 'react';
-import goalState from '../../atoms/goal';
 import styled from 'styled-components';
 import Input from "../../common/Input";
 import COLOR from '../../style/color';
 import Button from '../../common/Button';
 import { DateSelectArg } from '@fullcalendar/core';
-import { useRecoilState } from 'recoil';
 import { useStudyGoalPost } from '../../hooks/react_query_hooks/useStudyGoal';
 import { StudyGoalType } from '../../api/studyGoal/types/studyGoalType';
+import UTC_toKR from '../../utils/UTC_toKR';
+import { useRef } from 'react';
 
 type CalendarModalProps = {
   selectInfo?: DateSelectArg,
@@ -25,24 +24,18 @@ const initialGoal = {
 };
 
 const CalendarModal = ({ selectInfo, close }: CalendarModalProps) => {
-  const [goal, setGoal] = useRecoilState(goalState);
   const { create } = useStudyGoalPost();
-  const studyGoalRef = useRef<HTMLInputElement []|HTMLTextAreaElement[]>([]);
-
-  useEffect(() => {
-    setGoal(prev => ({ ...prev, startDate: new Date(selectInfo!.startStr), endDate: new Date(selectInfo!.endStr) }));
-    console.log(goal);
-  }, []);
+  const studyGoalRef = useRef<HTMLInputElement[] | HTMLTextAreaElement[]>([]);
 
   // Input Dom의 값 저장 및 가공
   const onSave = () => {
-    let newStudyGoal: any = {};
+    let newStudyGoal: any = initialGoal;
     studyGoalRef.current.forEach(ele => {
       if (ele.id !== 'hour' && ele.id !== 'min')
         newStudyGoal = { ...newStudyGoal, [ele.id]: ele.value }
     });
     const formattedGoalTime = 'PT' + studyGoalRef.current[2].value.toString() + 'H' + studyGoalRef.current[3].value.toString() + 'M';
-    newStudyGoal = { ...newStudyGoal, goalTime: formattedGoalTime, userStudySubjectId: '1e347c2e-4f17-4838-ae07-49be14ebc60b' };
+    newStudyGoal = { ...newStudyGoal, startDate: UTC_toKR(selectInfo!.start), endDate: UTC_toKR(selectInfo!.end), goalTime: formattedGoalTime, userStudySubjectId: '1e347c2e-4f17-4838-ae07-49be14ebc60b' };
     return newStudyGoal;
   };
 
@@ -53,8 +46,7 @@ const CalendarModal = ({ selectInfo, close }: CalendarModalProps) => {
     let calendarApi = selectInfo!.view.calendar;
     calendarApi.unselect();
     create(newStudyGoal);
-    //calendarApi.addEvent({ ...goal, start: goal.startDate, end: goal.endDate });
-    setGoal(initialGoal);
+    calendarApi.addEvent({ ...newStudyGoal, start: newStudyGoal.startDate, end: newStudyGoal.endDate });
     close();
   };
 

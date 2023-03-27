@@ -7,6 +7,7 @@ import {
 import { useResource, useSetResource } from "./useResource";
 import { useQuery, useMutation } from "react-query";
 import { StudyGoalType } from "../../api/studyGoal/types/studyGoalType";
+import { useEffect } from "react";
 
 export const useStudyGoalPost = () => {
   const queryState = useSetResource({
@@ -15,16 +16,11 @@ export const useStudyGoalPost = () => {
     requester: STUDY_GOAL_POST.requester,
   });
 
-  const create = (newStudyGoal:StudyGoalType) => {
+  const create = (newStudyGoal: StudyGoalType) => {
     if (newStudyGoal.title !== '' && newStudyGoal.detail !== '' && newStudyGoal.goalTime !== '' && newStudyGoal.userStudySubjectId !== '') {
       queryState.mutate(newStudyGoal);
     }
-  }
-
-  if (queryState.status === 'success') {
-    console.log('생성 성공!');
-  }
-  else console.log('생성 실패!');
+  };
     
   return {create};
 };
