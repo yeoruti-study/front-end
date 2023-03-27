@@ -9,7 +9,7 @@ const UserNavigation = () => {
   return (
     <UserNavigationSection>
       <UserTabWrap>
-        {userInfo ? (
+        {userInfo.id && (
           <>
             {userInfo.profileImagePath ? (
               <img
@@ -50,8 +50,6 @@ const UserNavigation = () => {
               />
             </svg>
           </>
-        ) : (
-          <LoginButton>로그인</LoginButton>
         )}
       </UserTabWrap>
     </UserNavigationSection>
@@ -68,6 +66,7 @@ const UserNavigationSection = styled.section`
   align-items: center;
   justify-content: flex-end;
   width: 100%;
+  height: 48.4px;
   padding: 5px;
   background-color: inherit;
 `;

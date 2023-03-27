@@ -1,10 +1,12 @@
 import React, { PropsWithChildren } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUserProfileGet } from "../../hooks/react_query_hooks/useUser";
 import styled from "styled-components";
 import COLOR from "../../style/color";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import userInfoAtom from "../../atoms/userInfo";
+import logoutRequest from "../../api/temporary";
+import localConsole from "../../utils/localConsole";
 
 const Navigation = () => {
   const { status, data } = useUserProfileGet();
@@ -44,8 +46,46 @@ const TabWrap = ({ children }: PropsWithChildren) => {
 };
 
 const Logout = () => {
+  const navigate = useNavigate();
+  const setUserInfo = useSetRecoilState(userInfoAtom);
+  const handleLogout = () => {
+    logoutRequest
+      .LogoutGet()
+      .then((res) => {
+        localConsole?.log(res);
+        // setUserInfo({
+        //   id: "",
+        //   username: "",
+        //   roles: "",
+        //   profileName: "",
+        //   profileBirth: "",
+        //   profileImagePath: "",
+        //   alarmPermission: true,
+        //   friendAcceptance: true,
+        // });
+      })
+      .catch((e) => {
+        localConsole?.log(e);
+        setUserInfo({
+          id: "",
+          username: "",
+          roles: "",
+          profileName: "",
+          profileBirth: "",
+          profileImagePath: "",
+          alarmPermission: true,
+          friendAcceptance: true,
+        });
+        alert("로그아웃되었습니다");
+        navigate("/", { replace: true });
+      });
+  };
   // const logoutHandler =
-  return <LogoutDiv className="Navigation__Item">로그아웃</LogoutDiv>;
+  return (
+    <LogoutDiv className="Navigation__Item" onClick={handleLogout}>
+      로그아웃
+    </LogoutDiv>
+  );
 };
 const BottomNavItem = ({ children }: PropsWithChildren) => {
   return <BottomNavItemDiv>{children}</BottomNavItemDiv>;

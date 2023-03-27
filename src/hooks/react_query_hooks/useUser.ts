@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { isIncludesOneof } from "./../../utils/urlParser";
 import { useMutation, useQuery } from "react-query";
@@ -42,11 +43,12 @@ export const useUserProfileGet = () => {
     useQuery,
     key: USER_PROFILE_GET.key,
     fetcher: USER_PROFILE_GET.fetcher,
+    staleTime: 0,
   });
-  const { status } = queryState;
+  const { status, data } = queryState;
   useEffect(() => {
-    if (queryState.status === "success" && queryState.data) {
-      setUserInfo({ ...queryState.data.data.data });
+    if (status === "success" && data) {
+      setUserInfo({ ...data.data.data });
     }
   }, [status]);
 
@@ -66,7 +68,9 @@ export const useUserProfilePut = () => {
     });
   };
 
-  if (queryState.status === "success") alert("회원정보 수정을 완료했습니다");
+  useEffect(() => {
+    if (queryState.status === "success") alert("회원정보 수정을 완료했습니다");
+  }, [queryState.status]);
   return onClick;
 };
 
@@ -81,9 +85,11 @@ export const useUserDelete = () => {
     queryState.mutate({ username, password });
   };
 
-  if (queryState.status === "success") {
-    alert("회원탈퇴를 완료했습니다");
-  }
+  useEffect(() => {
+    if (queryState.status === "success") {
+      alert("회원탈퇴를 완료했습니다");
+    }
+  }, [queryState.status]);
 
   return onClick;
 };
