@@ -4,11 +4,29 @@ import {
   STUDYROOM_CATEGORY_GET,
   STUDYROOM_PW_PATCH,
   STUDYROOM_PW_CHECK_POST,
+  STUDYROOM_POST,
 } from "./../../api/studyRoom/Resource";
 import { STUDYROOM_ALL_GET } from "../../api/studyRoom/Resource";
 import { useResource, useSetResource } from "./useResource";
 import { useQuery, useMutation } from "react-query";
+import { StudyRoomPostRequest } from "../../api/studyRoom/types/studyRoomAPI";
 
+export const useStudyRoomPost = () => {
+  const queryState = useSetResource({
+    useMutation,
+    key: STUDYROOM_POST.key,
+    requester: STUDYROOM_POST.requester,
+  });
+
+  const onClick = (params: StudyRoomPostRequest) => {
+    queryState.mutate({
+      ...params,
+    });
+  };
+
+  if (queryState.status === "success") alert("스터디룸 생성이 완료되었습니다");
+  return onClick;
+};
 export const useStudyRoomAllGet = () => {
   const queryState = useResource({
     useQuery,

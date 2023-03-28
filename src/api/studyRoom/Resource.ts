@@ -4,6 +4,10 @@ import {
   createResource,
 } from "../../hooks/react_query_hooks/useResource";
 
+export const STUDYROOM_POST = createRequest({
+  key: [`STUDYROOM_POST`],
+  requester: studyRoomRequest.StudyRoomPost,
+});
 export const STUDYROOM_ALL_GET = createResource({
   key: [`STUDYROOM_ALL_GET`],
   fetcher: studyRoomRequest.StudyRoomAllGet,

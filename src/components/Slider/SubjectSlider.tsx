@@ -1,3 +1,4 @@
+// deprecated
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import useSliderContext from "../../hooks/useSliderContext";
@@ -6,6 +7,9 @@ import COLOR from "../../style/color";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import subIndexState from "../../atoms/subIndex";
 import subListState from "../../atoms/subList";
+import localConsole from "../../utils/localConsole";
+import { useQueryClient } from "react-query";
+import { USER_STUDY_SUBJECT_LIST_GET } from "../../api/userStudySubject/Resource";
 
 export const SliderContext = React.createContext<any | null>(null);
 
@@ -51,9 +55,11 @@ const SubjectSlider = (props: any) => {
   );
 };
 
-const SliderContent = () => {
+const SliderContent = React.memo(() => {
   const { translate, transition, width } = useSliderContext().state;
   const { subList } = useSliderContext();
+  // const queryClient = useQueryClient();
+  // const subList = queryClient.getQueryData(USER_STUDY_SUBJECT_LIST_GET.key)
   return (
     <ContentWrapper>
       <ContentStyle
@@ -61,35 +67,37 @@ const SliderContent = () => {
         transitionVal={transition}
         widthVal={(width + 1000) * subList.length}
       >
-        {subList.map((slide: any, i: number) => (
-          <SubjectSlider.Cell
-            key={slide.id + i}
-            id={slide.id}
-            title={slide.title}
-            widthVal={width}
-          />
-        ))}
+        {subList &&
+          subList.length > 0 &&
+          subList.map((slide: any, i: number) => (
+            <SubjectSlider.Cell
+              key={slide.id + i}
+              id={slide.id}
+              title={slide.title}
+              widthVal={width}
+            />
+          ))}
       </ContentStyle>
     </ContentWrapper>
   );
-};
+});
 
-const Left = () => {
+const Left = React.memo(() => {
   const { activeIndex, prevSlide } = useSliderContext().state;
 
   if (activeIndex.current <= 0) return <></>;
   return <SlideButton direction="left" onClick={prevSlide} />;
-};
+});
 
-const Right = () => {
+const Right = React.memo(() => {
   const { activeIndex, nextSlide } = useSliderContext().state;
   const { subList } = useSliderContext();
-
+  localConsole?.log(subList);
   if (activeIndex.current >= subList.length - 1) return <></>;
   return <SlideButton direction="right" onClick={nextSlide} />;
-};
+});
 
-const Cell = (props: any) => {
+const Cell = React.memo((props: any) => {
   const { id, title, widthVal } = props;
   return (
     <>
@@ -100,7 +108,7 @@ const Cell = (props: any) => {
       )}
     </>
   );
-};
+});
 
 SubjectSlider.Left = Left;
 SubjectSlider.Right = Right;

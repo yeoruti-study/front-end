@@ -39,13 +39,13 @@ class RoomUserAPI extends RequestCore {
     return response;
   };
 
-  public RoomUserStudyRoomGet = async (userId: string) => {
+  public RoomUserStudyRoomGet = async () => {
     const response = await this.apiRequest<
       undefined,
       roomUserStudyRoomGetResponse
     >({
       requestMethod: "GET",
-      url: `study-room/list/user/${userId}`,
+      url: `study-room/list`,
     });
 
     return response;

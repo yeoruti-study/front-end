@@ -1,3 +1,5 @@
+// deprecated
+
 import SubjectSlider from "../components/Slider/SubjectSlider";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -6,6 +8,10 @@ import Input from "../common/Input";
 import Button from "../common/Button";
 import newSubState from "../atoms/newSub";
 import subListState from "../atoms/subList";
+import {
+  useUserStudySubjectListGet,
+  useUserStudySubjectPost,
+} from "../hooks/react_query_hooks/useStudySubject";
 
 // export type DataType = {
 //   id: string;
@@ -21,14 +27,16 @@ const SubjectContainer = () => {
   const subjectIndex = useRecoilValue(subIndexState);
   const [newSub, setNewSub] = useRecoilState(newSubState);
   const setSubList = useSetRecoilState(subListState);
-
+  const onSubjectCreate = useUserStudySubjectPost();
+  useUserStudySubjectListGet();
   const addNewSubject = () => {
     // TODO: 모달 창으로 만들기
     if (newSub.title === "") {
       alert("과목 이름을 작성해주세요");
       return;
     }
-    setSubList((prev) => [...prev, { id: "test", title: newSub.title }]);
+    onSubjectCreate(newSub.title);
+    // setSubList((prev) => [...prev, { id: "test", title: newSub.title }]);
     setNewSub({ title: "" });
   };
 
@@ -51,15 +59,13 @@ const SubjectContainer = () => {
               <Input
                 width="250px"
                 value={newSub.title}
-                onChange={(e: any) =>
-                  setNewSub((prev) => ({ ...prev, title: e.target.value }))
-                }
+                onChange={(e: any) => setNewSub({ title: e.target.value })}
               />
             </InputWrapper>
 
             <Button
               width="150px"
-              style={{ "border-radius": "30px" }}
+              style={{ borderRadius: "30px" }}
               onClick={addNewSubject}
             >
               추가하기

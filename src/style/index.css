@@ -1,0 +1,29 @@
+@keyframes slideIn {
+  0% {
+    transform: translateY(calc(-100% + 40px));
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.Dropdown__Slide__In {
+  animation: slideIn 0.4s ease;
+  overflow: hidden;
+}
+.Dropdown__Slide__Out {
+  animation: slideOut 0.4s ease;
+  animation-fill-mode: forwards;
+  overflow: hidden;
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(calc(-100% + 40px));
+  }
+}
