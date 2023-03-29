@@ -22,7 +22,11 @@ const StudyRoomAdd = () => {
     const fieldValues = Object.fromEntries(formData.entries());
     localConsole?.log(formData);
     const formIsValid = Object.values(fieldValues).every(
-      (value) => !getFieldError(value as string)
+      (value, idx) =>
+        !getFieldError(
+          e.currentTarget[idx].getAttribute("required") === "required",
+          value as string
+        )
     );
 
     setWasSubmitted(true);
@@ -30,32 +34,49 @@ const StudyRoomAdd = () => {
       // TODO: API 연결
 
       localConsole?.log("form submitted", fieldValues);
+      localConsole?.log(String(fieldValues["roomPassword"]));
       onSubmit({
         name: String(fieldValues["name"]),
         studyCategoryId: String(fieldValues["studyCategoryId"]),
         maximumNumberOfPeople:
           Number(fieldValues["maximumNumberOfPeople"]) || undefined,
-        studyGoalTime: undefined,
-        roomPassword: undefined,
+        studyGoalTime:
+          `PT${String(fieldValues["studyGoalTime"])}H` || undefined,
+        roomPassword: String(fieldValues["roomPassword"]) || undefined,
       });
     }
   }
 
   const StudyRoomAddFieldNames = [
-    { name: "스터디룸 이름", type: "text", key: "name" },
+    { name: "스터디룸 이름", type: "text", key: "name", required: true },
 
     {
       name: "스터디룸 최대 인원",
       type: "number",
       step: "1",
       key: "maximumNumberOfPeople",
+      required: true,
     },
     {
       name: "스터디룸 하루 공부 목표 시간",
       type: "number",
       step: "0.5",
       key: "studyGoalTime",
+      required: false,
     },
+  ];
+  const PasswordAddFieldNames = [
+    {
+      name: "비밀번호",
+      type: "password",
+      key: "roomPassword",
+      required: false,
+    },
+    // {
+    //   name: "비밀번호 확인",
+    //   type: "password",
+    //   key: "roomPasswordCheck",
+    // },
   ];
 
   return (
@@ -69,6 +90,7 @@ const StudyRoomAdd = () => {
             wasSubmitted={wasSubmitted}
             type={item.type}
             step={item.step}
+            required={item.required}
           />
         ))}
         <StudyRoomCategory
@@ -76,6 +98,16 @@ const StudyRoomAdd = () => {
           wasSubmitted={wasSubmitted}
           formKey={"studyCategoryId"}
         />
+        {PasswordAddFieldNames.map((item) => (
+          <StudyRoomFormItem
+            key={item.key}
+            name={item.name}
+            formKey={item.key}
+            wasSubmitted={wasSubmitted}
+            type={item.type}
+            required={item.required}
+          />
+        ))}
         <StudyRoomSubmitWrap>
           <StudyRoomFormButton>추가하기</StudyRoomFormButton>
         </StudyRoomSubmitWrap>
@@ -93,15 +125,18 @@ export default StudyRoomAdd;
 const StudyRoomAddForm = styled.form`
   display: grid;
   grid-template-columns: 19.375rem 19.375rem;
-  grid-template-rows: 5.6875rem 5.6875rem 5.6875rem;
+  grid-template-rows: 5.6875rem 5.6875rem 5.6875rem 5.6875rem;
   grid-row-gap: 1.875rem;
   grid-column-gap: 1.875rem;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   max-width: 800px;
-  max-height: 400px;
+  max-height: 550px;
 
   /* padding: 4.375rem 2.25rem 2.25rem 2.25rem; */
   padding: 20px;
+  padding-top: 50px;
   border-radius: 30px;
   box-shadow: 0.5px 3px 20px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;

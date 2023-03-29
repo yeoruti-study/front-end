@@ -1,4 +1,7 @@
 import { useMutation, useQuery } from "react-query";
+import { useSetRecoilState } from "recoil";
+import categoryAddPopupAtom from "../../atoms/categoryAdd";
+import localConsole from "../../utils/localConsole";
 import {
   STUDY_CATEGORY_ALL_GET,
   STUDY_CATEGORY_DELETE,
@@ -12,6 +15,7 @@ import {
 } from "./useResource";
 
 export const useStudyCategoryPost = () => {
+  const setCategoryAddPopup = useSetRecoilState(categoryAddPopupAtom);
   const queryState = useSetResource({
     useMutation,
     key: STUDY_CATEGORY_POST.key,
@@ -19,13 +23,17 @@ export const useStudyCategoryPost = () => {
   });
 
   const onClick = (name: string, description?: string) => {
+    localConsole?.log(`onclick: ${name}, ${description}`);
     queryState.mutate({
       name,
       description,
     });
   };
 
-  if (queryState.status === "success") alert("카테고리를 생성했습니다");
+  if (queryState.status === "success") {
+    alert("카테고리를 생성했습니다");
+    setCategoryAddPopup(false);
+  }
 
   return onClick;
 };

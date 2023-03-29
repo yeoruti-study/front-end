@@ -22,9 +22,12 @@ export function useResource<T, P>(resource: {
   key: ResourceKeyType;
   fetcher: (params?: P) => Promise<T>;
   params?: P;
+  staleTime?: number;
 }) {
-  return resource.useQuery(resource.key, () =>
-    resource.fetcher(resource?.params)
+  return resource.useQuery(
+    resource.key,
+    () => resource.fetcher(resource?.params),
+    { staleTime: resource.staleTime }
   );
 }
 

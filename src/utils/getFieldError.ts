@@ -1,13 +1,6 @@
-function getFieldError(value: string | undefined) {
-  if (!value) return "field is required";
+function getFieldError(required: boolean, value: string | undefined) {
+  if (required && !value) return "필수 항목입니다";
 
-  const valueIsLowerCase = value === value.toLowerCase();
-
-  const valueIsShortEnough = value.length <= 20;
-
-  if (!valueIsLowerCase) {
-    return "value must be lower case";
-  }
   return null;
 }
 

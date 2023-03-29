@@ -10,6 +10,9 @@ import { STUDYROOM_ALL_GET } from "../../api/studyRoom/Resource";
 import { useResource, useSetResource } from "./useResource";
 import { useQuery, useMutation } from "react-query";
 import { StudyRoomPostRequest } from "../../api/studyRoom/types/studyRoomAPI";
+import { useSetRecoilState } from "recoil";
+import studyPwPopupAtom from "../../atoms/studyPwPopup";
+import { useEffect } from "react";
 
 export const useStudyRoomPost = () => {
   const queryState = useSetResource({
@@ -24,6 +27,7 @@ export const useStudyRoomPost = () => {
     });
   };
 
+  if (queryState.status === "success") alert("스터디룸 생성이 완료되었습니다");
   return onClick;
 };
 export const useStudyRoomAllGet = () => {
@@ -77,11 +81,28 @@ export const useStudyRoomPwPatch = () => {
 };
 
 export const useStudyRoomPwCheckPost = () => {
+  const setStudyPwPopup = useSetRecoilState(studyPwPopupAtom);
   const queryState = useSetResource({
     useMutation,
     key: STUDYROOM_PW_CHECK_POST.key,
     requester: STUDYROOM_PW_CHECK_POST.requester,
   });
 
-  return queryState;
+  const onClick = (id: string, roomPassword: string) => {
+    queryState.mutate({
+      id,
+      roomPassword,
+    });
+  };
+
+  const { status } = queryState;
+  useEffect(() => {
+    if (status === "success") {
+      setStudyPwPopup(false);
+    } else if (status === "error") {
+      alert("비밀번호 오류");
+    }
+  }, [status]);
+
+  return onClick;
 };

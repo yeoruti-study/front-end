@@ -39,15 +39,17 @@ const CategoryAddForm = () => {
     localConsole?.log(fieldValues);
     localConsole?.log(formData.entries());
     const formIsValid = Object.values(fieldValues).every(
-      (value) => !getFieldError(value as string)
+      (value) => !getFieldError(true, value as string)
     );
 
     setWasSubmitted(true);
     if (formIsValid) {
       // TODO: API 연결
-      onSubmit(
-        (String(fieldValues["name"]), String(fieldValues["description"]))
+      localConsole?.log(
+        String(fieldValues["name"]),
+        String(fieldValues["description"])
       );
+      onSubmit(String(fieldValues["name"]), String(fieldValues["description"]));
       localConsole?.log("form submitted", fieldValues);
     }
   }
@@ -60,6 +62,7 @@ const CategoryAddForm = () => {
           type={category.type}
           formKey={category.key}
           wasSubmitted={wasSubmitted}
+          required={true}
         />
       ))}
       <StudyRoomSubmitWrap>
@@ -95,19 +98,31 @@ const CategoryAddPopupDiv = styled.div`
 `;
 
 const PopupBackgroundDiv = styled.div`
+  z-index: 900;
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 const CategoryAddFormBox = styled.form`
-  z-index: 800;
+  z-index: 910;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 400px;
+
   padding: 20px;
   border-radius: 30px;
   box-shadow: 0.5px 3px 20px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
+  transform: translate(-50%, -50%);
+
+  .Alert__Message {
+    color: #c60404 !important;
+    font-size: 0.8rem;
+  }
 `;

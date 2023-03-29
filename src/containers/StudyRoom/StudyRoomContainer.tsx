@@ -6,7 +6,7 @@ import categoryAddPopupAtom from "../../atoms/categoryAdd";
 import CategoryAddPopup from "../../components/StudyRoom/CategoryAddPopup/CategoryAddPopup";
 import StudyRoomAdd from "../../components/StudyRoom/StudyRoomAdd/StudyRoomAdd";
 import StudyRoomLayout from "../../components/StudyRoom/StudyRoomLayout";
-import StudyRoomList from "../../components/StudyRoom/StudyRoomList";
+import StudyRoomSearch from "../../components/StudyRoom/StudyRoomSearch/StudyRoomSearch";
 import { useRoomUserStudyRoomGet } from "../../hooks/react_query_hooks/useRoomUser";
 import { NavItemLi, NavUl } from "./MyStudyRoomContainer";
 
@@ -59,12 +59,6 @@ const StudyRoomNav = () => {
           {item.name}
         </NavItemLi>
       ))}
-      {/* <NavItemLi onClick={() => navigate("/studyroom/home")}>홈</NavItem>
-      <NavItemLi onClick={() => navigate("/studyroom/search")}>스터디룸 조회</NavItem>
-      <NavItemLi onClick={() => navigate("/studyroom/add")}>스터디룸 생성</NavItem>
-      <NavItemLi onClick={() => navigate("/studyroom/my-studyroom/home")}>
-        MY 스터디룸
-      </NavItem> */}
     </NavUl>
   );
 };
@@ -74,7 +68,7 @@ const StudyRoomMain = () => {
 
   switch (type) {
     case "search":
-      return <StudyRoomList />;
+      return <StudyRoomSearch />;
     case "add":
       return <StudyRoomAdd />;
     default:

@@ -15,7 +15,7 @@ type StudyRoomCategoryProps = {
 const StudyRoomCategory = (props: StudyRoomCategoryProps) => {
   const { name, wasSubmitted, formKey } = props;
   const [value, setValue] = useState("");
-  const errorMessage = getFieldError(value);
+  const errorMessage = getFieldError(true, value);
   const [touched, setTouched] = React.useState(false);
   const displayErrorMessage = (wasSubmitted || touched) && errorMessage;
 
@@ -27,37 +27,39 @@ const StudyRoomCategory = (props: StudyRoomCategoryProps) => {
         <StudyRoomFormLabel name={name} />
         <CategoryAdd />
       </LabelWrap>
-      <StudyRoomFormItemSelect
-        id={`${name}-input`}
-        className="Study__Add__Input"
-        placeholder={name}
-        name={formKey}
-        onChange={(e) => setValue(e.currentTarget.value)}
-        onBlur={() => setTouched(true)}
-        required
-        araia-aria-describedby={
-          displayErrorMessage ? `${name}-error` : undefined
-        }
-      >
-        <option value="" selected disabled style={{ display: "none" }}>
-          카테고리 선택
-        </option>
-        {status === "success" ? (
-          data?.data.data.map((item, idx) => (
-            <option key={item.id} value={item.id}>
-              {item.name}
-            </option>
-          ))
-        ) : (
-          <></>
-        )}
-      </StudyRoomFormItemSelect>
+      <StudyRoomSelectWrap>
+        <StudyRoomFormItemSelect
+          id={`${name}-input`}
+          className="Study__Add__Input"
+          placeholder={name}
+          name={formKey}
+          onChange={(e) => setValue(e.currentTarget.value)}
+          onBlur={() => setTouched(true)}
+          required
+          araia-aria-describedby={
+            displayErrorMessage ? `${name}-error` : undefined
+          }
+        >
+          <option value="" style={{ display: "none" }}>
+            카테고리 선택
+          </option>
+          {status === "success" ? (
+            data?.data.data.map((item, idx) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))
+          ) : (
+            <></>
+          )}
+        </StudyRoomFormItemSelect>
 
-      {displayErrorMessage ? (
-        <span role="alert" id={`${name}-error`} className="Alert__Message">
-          {errorMessage}
-        </span>
-      ) : null}
+        {displayErrorMessage ? (
+          <span role="alert" id={`${name}-error`} className="Alert__Message">
+            {errorMessage}
+          </span>
+        ) : null}
+      </StudyRoomSelectWrap>
     </StudyRoomFormWrap>
   );
 };
@@ -68,12 +70,18 @@ const LabelWrap = ({ children }: PropsWithChildren) => {
 const CategoryAdd = () => {
   const setIsCategoryPopupOpen = useSetRecoilState(categoryAddPopupAtom);
   return (
-    <CategoryAddButton onClick={() => setIsCategoryPopupOpen(true)}>
+    <CategoryAddDiv onClick={() => setIsCategoryPopupOpen(true)}>
       새로 추가하기
-    </CategoryAddButton>
+    </CategoryAddDiv>
   );
 };
-
+const StudyRoomSelectWrap = ({ children }: PropsWithChildren) => {
+  return (
+    <StudyRoomSelectWrapDiv className="Study__Input__Wrap">
+      {children}
+    </StudyRoomSelectWrapDiv>
+  );
+};
 export default StudyRoomCategory;
 const LabelWrapDiv = styled.div`
   width: 100%;
@@ -81,15 +89,17 @@ const LabelWrapDiv = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-const CategoryAddButton = styled.button`
+const CategoryAddDiv = styled.div`
   border-radius: 12px;
   border: solid 0.0625rem #eaeaea;
-  background-color: ${COLOR.SUB};
+  background-color: green;
   color: white;
-  padding: 3px 7px;
+  padding: 5px 7px;
+  font-size: 0.8rem;
+  cursor: pointer;
 `;
 const StudyRoomFormItemSelect = styled.select`
-  max-width: 19.375rem;
+  width: 100%;
   height: 3.125rem;
   padding: 0.875rem 1.25rem;
   border-radius: 12px;
@@ -117,4 +127,9 @@ const StudyRoomFormItemSelect = styled.select`
   :focus {
     border-color: #202020;
   }
+`;
+
+const StudyRoomSelectWrapDiv = styled.div`
+  position: relative;
+  width: 100%;
 `;

@@ -6,7 +6,7 @@ import { PublicRouteType } from "./types/Route";
 const PublicRoute = ({ restricted, children }: PublicRouteType) => {
   const { status } = useUserProfileGet();
   if (status === "success" && restricted) {
-    return <Navigate to={"/home"} replace />;
+    return <Navigate to={"/home"} />;
   }
   return children ? children : <Outlet />;
 };

@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import { StudyRoomType } from "../api/studyRoom/types/studyRoomType";
 
 const curStudyRoomAtom = atom<StudyRoomType>({
@@ -22,4 +22,11 @@ const curStudyRoomAtom = atom<StudyRoomType>({
   },
 });
 
+export const curStudyRoomIdSelector = selector({
+  key: "curStudyRoomIdSelector",
+  get: ({ get }) => {
+    const originState = get(curStudyRoomAtom);
+    return originState.id;
+  },
+});
 export default curStudyRoomAtom;
