@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import curStudyRoomAtom from "../../atoms/curStudyRoom";
+import studyPwPopupAtom from "../../atoms/studyPwPopup";
+import PasswordPopup from "../../components/StudyRoom/StudyPasswordPopup/PasswordPopup";
 import StudyRoomLayout from "../../components/StudyRoom/StudyRoomLayout";
 import {
   useRoomUserAllGet,
@@ -10,23 +12,36 @@ import {
 } from "../../hooks/react_query_hooks/useRoomUser";
 import COLOR from "../../style/color";
 const MyStudyRoomContainer = () => {
-  const setCurStudyRoom = useSetRecoilState(curStudyRoomAtom);
+  const [curStudyRoom, setCurStudyRoom] = useRecoilState(curStudyRoomAtom);
+
+  const [studyPwPopup, setStudyPwPopup] = useRecoilState(studyPwPopupAtom);
   useEffect(() => {
     const curStudyRoomSession = sessionStorage.getItem("my_study_room");
     if (curStudyRoomSession) {
       setCurStudyRoom({ ...JSON.parse(curStudyRoomSession) });
     }
   }, []);
+  useEffect(() => {
+    if (curStudyRoom.id) {
+      setStudyPwPopup(true);
+    }
+  }, [curStudyRoom]);
   return (
-    <StudyRoomLayout
-      Nav={MyStudyRoomNav}
-      Main={MyStudyRoomMain}
-      Member={MyStudyRoomMemberStatus}
-      Dropdown={MyStudyRoomDropDown}
-    />
+    <StudyRoomContainerWrap>
+      {studyPwPopup && <PasswordPopup />}
+      <StudyRoomLayout
+        Nav={MyStudyRoomNav}
+        Main={MyStudyRoomMain}
+        Member={MyStudyRoomMemberStatus}
+        Dropdown={MyStudyRoomDropDown}
+      />
+    </StudyRoomContainerWrap>
   );
 };
 
+const StudyRoomContainerWrap = ({ children }: PropsWithChildren) => {
+  return <StudyRoomContainerWrapDiv>{children}</StudyRoomContainerWrapDiv>;
+};
 export const MyStudyRoomDropDown = () => {
   const { status, data } = useRoomUserStudyRoomGet();
   const [curStudyRoom, setCurStudyRoom] = useRecoilState(curStudyRoomAtom);
@@ -228,6 +243,11 @@ const MyHomeNotification = () => {
 
 export default MyStudyRoomContainer;
 
+const StudyRoomContainerWrapDiv = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`;
 const DropdownUl = styled.ul`
   width: 100%;
   border-radius: 10px;

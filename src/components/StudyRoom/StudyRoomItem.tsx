@@ -38,7 +38,7 @@ const StudyRoomItem = (props: RoomProps) => {
   // TODO: isSigned 로직 수정
 
   const isSigned = masterUserId === userId || myStudyRoomSet.has(id);
-  console.log(masterUserId, userId);
+  // console.log(masterUserId, userId);
 
   const signupHandler = (e: React.MouseEvent) => {
     e.preventDefault();
