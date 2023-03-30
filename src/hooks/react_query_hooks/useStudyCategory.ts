@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import categoryAddPopupAtom from "../../atoms/categoryAdd";
 import localConsole from "../../utils/localConsole";
@@ -29,9 +29,10 @@ export const useStudyCategoryPost = () => {
       description,
     });
   };
-
+  const queryClient = useQueryClient();
   if (queryState.status === "success") {
     alert("카테고리를 생성했습니다");
+    queryClient.invalidateQueries(STUDY_CATEGORY_ALL_GET.key);
     setCategoryAddPopup(false);
   }
 
