@@ -26,7 +26,7 @@ const StudyRoomItem = (props: RoomProps) => {
     studyCategoryDto,
     maximumNumberOfPeople,
     studyGoalTime,
-    roomPassword,
+    hasRoomPassword,
     masterUserId,
     createdAt,
     updatedAt,
@@ -70,8 +70,25 @@ const StudyRoomItem = (props: RoomProps) => {
       >
         <WrapDiv>
           <InfoDiv>
-            <TitleH1>{name}</TitleH1>
+            <TitleH1>
+              {name} {hasRoomPassword ? "(PW: TRUE)" : "(PW: FALSE)"}
+              {/* {!hasRoomPassword && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="rgba(0,0,0,0.5)"
+                  className="w-6 h-6"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )} */}
+            </TitleH1>
             <CategoryDiv>{studyCategoryDto.name}</CategoryDiv>
+            <SecurityDiv></SecurityDiv>
           </InfoDiv>
 
           <SignupButton isSigned={isSigned} onClick={signupHandler}>
@@ -143,6 +160,10 @@ const SignupButton = styled.button<SignupButtonProps>`
 const TitleH1 = styled.h1`
   font-size: 1.2rem;
   font-weight: 600;
+
+  svg {
+    height: 15px;
+  }
 `;
 const CategoryDiv = styled.div`
   border-radius: 20px;
@@ -204,3 +225,4 @@ const RoomDiv = styled.div`
   -webkit-box-shadow: 0px 3px 8px -4px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 3px 8px -4px rgba(0, 0, 0, 0.3);
 `;
+const SecurityDiv = styled.div``;
