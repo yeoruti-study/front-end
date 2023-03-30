@@ -3,7 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 import { StudyRoomType } from "../../api/studyRoom/types/studyRoomType";
-import StudyRoomItem from "./StudyRoomItem";
+import StudyRoomItem from "../StudyRoom/StudyRoomItem";
 
 interface ListProps {
   roomList: StudyRoomType[];

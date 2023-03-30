@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { RoomUserType } from "../../api/roomUser/types/roomUserType";
 import { navItemData } from "../../components/StudyRoom/StudyRoomDetail/data";
-import StudyUserList from "../../components/StudyRoom/StudyUserList";
+import StudyUserList from "../../components/deprecated/StudyUserList";
 import { useRoomUserAllGet } from "../../hooks/react_query_hooks/useRoomUser";
 
 export const dummyData = [
