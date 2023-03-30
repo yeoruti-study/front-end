@@ -13,6 +13,7 @@ import { StudyRoomPostRequest } from "../../api/studyRoom/types/studyRoomAPI";
 import { useSetRecoilState } from "recoil";
 import studyPwPopupAtom from "../../atoms/studyPwPopup";
 import { useEffect } from "react";
+import localConsole from "../../utils/localConsole";
 
 export const useStudyRoomPost = () => {
   const queryState = useSetResource({
@@ -36,7 +37,9 @@ export const useStudyRoomAllGet = () => {
     key: STUDYROOM_ALL_GET.key,
     fetcher: STUDYROOM_ALL_GET.fetcher,
   });
-
+  if (queryState.status === "success" && queryState.data) {
+    localConsole?.log(queryState.data.data.data);
+  }
   return queryState;
 };
 
