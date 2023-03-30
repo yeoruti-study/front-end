@@ -44,7 +44,7 @@ const LayoutContainer = styled.section`
   grid-template-columns: 2fr 8fr;
 
   border-collapse: collapse;
-  //overflow: hidden;
+
   color: #fff;
   .item {
     flex-basis: 0;
@@ -76,6 +76,7 @@ const LayoutContainer = styled.section`
       /* min-width: 162px; */
       background-color: rgba(0, 0, 0, 0.05);
       color: black;
+      overflow: auto;
     }
     /* &:nth-child(3) {
       grid-row: 3/4;
@@ -89,5 +90,9 @@ const LayoutContainer = styled.section`
       justify-content: center;
       align-items: center;
     } */
+    .Study__Room__Main {
+      overflow: scroll;
+      height: 100%;
+    }
   }
 `;
