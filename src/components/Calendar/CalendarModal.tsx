@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import styled from 'styled-components';
 import Input from "../../common/Input";
 import COLOR from '../../style/color';
@@ -6,12 +7,17 @@ import { DateSelectArg } from '@fullcalendar/core';
 import { useStudyGoalPost } from '../../hooks/react_query_hooks/useStudyGoal';
 import { StudyGoalType } from '../../api/studyGoal/types/studyGoalType';
 import UTC_toKR from '../../utils/UTC_toKR';
-import { useRef } from 'react';
+import { useUserStudySubjectListGet } from '../../hooks/react_query_hooks/useStudySubject';
 
 type CalendarModalProps = {
   selectInfo?: DateSelectArg,
   close: () => void,
 };
+
+type StudySubjectProps = {
+  id: string,
+  title: string,
+}
 
 const initialGoal = {
   title: '',
@@ -19,13 +25,13 @@ const initialGoal = {
   goalTime: '',
   startDate: new Date(),
   endDate: new Date(),
-  userId: '05637e09-0ce5-40a9-ab7f-08f792fe56dc',
   userStudySubjectId: '',
 };
 
 const CalendarModal = ({ selectInfo, close }: CalendarModalProps) => {
-  const { create } = useStudyGoalPost();
-  const studyGoalRef = useRef<HTMLInputElement[] | HTMLTextAreaElement[]>([]);
+  const { createGoal } = useStudyGoalPost();
+  const studyGoalRef = useRef<HTMLInputElement[] | HTMLTextAreaElement[] | HTMLSelectElement[]>([]);
+  const studySubjectList = useUserStudySubjectListGet();
 
   // Input Dom의 값 저장 및 가공
   const onSave = () => {
@@ -34,19 +40,19 @@ const CalendarModal = ({ selectInfo, close }: CalendarModalProps) => {
       if (ele.id !== 'hour' && ele.id !== 'min')
         newStudyGoal = { ...newStudyGoal, [ele.id]: ele.value }
     });
+    console.log(newStudyGoal);
     const formattedGoalTime = 'PT' + studyGoalRef.current[2].value.toString() + 'H' + studyGoalRef.current[3].value.toString() + 'M';
-    newStudyGoal = { ...newStudyGoal, startDate: UTC_toKR(selectInfo!.start), endDate: UTC_toKR(selectInfo!.end), goalTime: formattedGoalTime, userStudySubjectId: '1e347c2e-4f17-4838-ae07-49be14ebc60b' };
+    newStudyGoal = { ...newStudyGoal, startDate: UTC_toKR(selectInfo!.start), endDate: UTC_toKR(selectInfo!.end), goalTime: formattedGoalTime };
     return newStudyGoal;
   };
 
   // 실제 공부목표 생성
-  const onCreate = () => {
+  const onAdd = async() => {
     const newStudyGoal:StudyGoalType = onSave();
     console.log(newStudyGoal);
+    await createGoal(newStudyGoal);
     let calendarApi = selectInfo!.view.calendar;
     calendarApi.unselect();
-    create(newStudyGoal);
-    calendarApi.addEvent({ ...newStudyGoal, start: newStudyGoal.startDate, end: newStudyGoal.endDate });
     close();
   };
 
@@ -65,13 +71,15 @@ const CalendarModal = ({ selectInfo, close }: CalendarModalProps) => {
       <Input id='startDate'  defaultValue={selectInfo?.startStr} ref={(ref:HTMLInputElement)=>studyGoalRef.current[4] = ref} />
       <Label>종료 날짜</Label>
       <Input  id='endDate' defaultValue={selectInfo?.endStr} ref={(ref:HTMLInputElement)=>studyGoalRef.current[5] = ref}/>
-      <Label>과목 선택(select)</Label>
-      <select>
-        <option value=''></option>
-      </select>
+      <Label>과목 선택</Label>
+      <SubjectSelect id='userStudySubjectId' ref={(ref:HTMLSelectElement)=>studyGoalRef.current[6] = ref}>
+        {studySubjectList.data?.data.data.map((sub: StudySubjectProps) =>
+          <option key={sub.id} value={sub.id}>{sub.title}</option>)
+        }
+      </SubjectSelect>
       <ButtonSet>
         <Button primary={false} onClick={close}>취소</Button>
-        <Button onClick={onCreate}>생성</Button>
+        <Button onClick={onAdd}>생성</Button>
       </ButtonSet>
     </CalendarModalContainer>
   );
@@ -83,13 +91,13 @@ const CalendarModalContainer = styled.div`
   width: 20%;
   min-width: 300px;
   padding: 1vw;
-`
+`;
 
 const Label = styled.h2`
   margin-top: 0.6rem;
   margin-bottom: 0.4rem;
   font-weight: 700;
-`
+`;
 
 const DetailTextArea = styled.textarea`
   width: 100%;
@@ -105,9 +113,14 @@ const DetailTextArea = styled.textarea`
   &:focus-within {
     box-shadow: 0 0 8px ${COLOR.SUB};
   }  
-`
+`;
 
 const ButtonSet = styled.div`
   display: flex;
   gap: 1rem;
-`
+`;
+
+const SubjectSelect = styled.select`
+  padding: 5px;
+  font-size: 1rem;
+`;

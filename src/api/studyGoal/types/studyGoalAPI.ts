@@ -13,7 +13,6 @@ export interface StudyGoalPostRequest {
   goalTime : string,
   startDate : Date,
   endDate : Date,
-  userId : string,
   userStudySubjectId : string,
 }
 

@@ -26,12 +26,12 @@ class StudyGoalAPI extends RequestCore {
     return response;
   };
 
-  public StudyGoalAllGet = async (userId: string) => {
+  public StudyGoalAllGet = async () => {
     const response = await this.apiRequest<
       undefined,
       StudyGoalAllGetResponse>({
       requestMethod: "GET",
-      url: `list/user/${userId}`,
+      url: "list",
     });
 
     return response;

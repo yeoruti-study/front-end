@@ -11,9 +11,9 @@ export const STUDY_GOAL_POST = createRequest({
   requester: studyGoalRequest.StudyGoalPost,
 });
 
-export const STUDY_GOAL_ALL_GET = createResourceWithQuery({
+export const STUDY_GOAL_ALL_GET = createResource({
   key: ["STUDY_GOAL_ALL_GET"],
-  fetcher: (userId: string) => studyGoalRequest.StudyGoalAllGet(userId),
+  fetcher: studyGoalRequest.StudyGoalAllGet,
 });
 
 export const STUDY_GOAL_ONE_GET = createResourceWithQuery({
@@ -23,5 +23,5 @@ export const STUDY_GOAL_ONE_GET = createResourceWithQuery({
 
 export const STUDY_GOAL_DELETE = createRequestWithQuery({
   key: ["STUDY_GOAL_DELETE"],
-  requester: (studyGoalId: string) => studyGoalRequest.StudyGoalDelete(studyGoalId),
+  requester: (studyGoalId?: string) => studyGoalRequest.StudyGoalDelete(studyGoalId!),
 });

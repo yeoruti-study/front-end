@@ -5,6 +5,5 @@ export interface StudyGoalType {
   goalTime : string,
   startDate : Date,
   endDate : Date,
-  userId : string,
   userStudySubjectId : string,
 }
