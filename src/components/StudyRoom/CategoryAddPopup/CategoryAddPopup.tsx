@@ -45,9 +45,11 @@ const CategoryAddForm = () => {
     setWasSubmitted(true);
     if (formIsValid) {
       // TODO: API 연결
-      onSubmit(
-        (String(fieldValues["name"]), String(fieldValues["description"]))
+      localConsole?.log(
+        String(fieldValues["name"]),
+        String(fieldValues["description"])
       );
+      onSubmit(String(fieldValues["name"]), String(fieldValues["description"]));
       localConsole?.log("form submitted", fieldValues);
     }
   }

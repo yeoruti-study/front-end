@@ -70,9 +70,9 @@ const LabelWrap = ({ children }: PropsWithChildren) => {
 const CategoryAdd = () => {
   const setIsCategoryPopupOpen = useSetRecoilState(categoryAddPopupAtom);
   return (
-    <CategoryAddButton onClick={() => setIsCategoryPopupOpen(true)}>
+    <CategoryAddDiv onClick={() => setIsCategoryPopupOpen(true)}>
       새로 추가하기
-    </CategoryAddButton>
+    </CategoryAddDiv>
   );
 };
 const StudyRoomSelectWrap = ({ children }: PropsWithChildren) => {
@@ -89,12 +89,14 @@ const LabelWrapDiv = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-const CategoryAddButton = styled.button`
+const CategoryAddDiv = styled.div`
   border-radius: 12px;
   border: solid 0.0625rem #eaeaea;
-  background-color: ${COLOR.SUB};
+  background-color: green;
   color: white;
-  padding: 3px 7px;
+  padding: 5px 7px;
+  font-size: 0.8rem;
+  cursor: pointer;
 `;
 const StudyRoomFormItemSelect = styled.select`
   width: 100%;

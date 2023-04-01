@@ -58,7 +58,9 @@ const SubjectDelete = () => {
           삭제 과목 선택
         </option>
         {data?.data.data.map((item, idx) => (
-          <option value={item.id}>{item.title}</option>
+          <option value={item.id} key={item.id}>
+            {item.title}
+          </option>
         ))}
       </SubjectDeleteSelect>
       <SubjectDeleteButton onDelete={handleSubmit} />
