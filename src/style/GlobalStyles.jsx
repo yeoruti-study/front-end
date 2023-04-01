@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
   *, *::before, *::after {
@@ -8,6 +8,7 @@ const GlobalStyles = createGlobalStyle`
   html, body, #root {
     height: 100%;
     margin: 0;
+    overflow-y: hidden;
   }
   html{
     font-size: 16px;
