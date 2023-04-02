@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
+import { LoginFormType } from '../../api/generalLogin/types/generalLoginType';
 import {
   GENERAL_LOGIN,
   GENERAL_LOGOUT
@@ -12,7 +13,7 @@ export const useGeneralLogin = () => {
     requester: GENERAL_LOGIN.requester,
   });
 
-  const onClick = (username: string, password: string) => {
+  const onClick = ({username, password}:LoginFormType) => {
     queryState.mutate({
       username,
       password,

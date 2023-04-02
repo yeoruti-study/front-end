@@ -5,5 +5,4 @@ const generalLoginApiClient = axios.create();
 generalLoginApiClient.defaults.baseURL = uriSelector();
 generalLoginApiClient.defaults.withCredentials = true;
 
-
 export default generalLoginApiClient;

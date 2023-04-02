@@ -13,7 +13,7 @@ class GeneralLoginAPI extends RequestCore{
     >({
       requestMethod: "POST",
       requestData: params,
-      url: "login",
+      url: "/login",
     });
   return response;
   }
@@ -24,7 +24,7 @@ class GeneralLoginAPI extends RequestCore{
       GeneralLogoutGetResponse
     >({
       requestMethod: "GET",
-      url: "logout",
+      url: "/logout",
     });
     return response;
   }
