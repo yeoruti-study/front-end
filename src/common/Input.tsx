@@ -1,10 +1,17 @@
+import { RefObject, InputHTMLAttributes } from "react";
 import styled from "styled-components";
 import COLOR from "../style/color";
 
-const Input = ({ width = "auto", onReset = null, ...res }) => {
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  width?: string;
+  onReset?: () => void;
+  inputRef?: RefObject<HTMLInputElement>;
+} ;
+
+const Input = ({ width = "auto", onReset, inputRef, ...res }: InputProps) => {
   return (
     <InputWrapper width={width}>
-      <InputBox {...res} adPadding={onReset} />
+      <InputBox ref={inputRef} {...res} adPadding={onReset ? true: false} />
       {onReset && <RemoveIcon onClick={onReset}>&times;</RemoveIcon>}
     </InputWrapper>
   );
@@ -12,7 +19,7 @@ const Input = ({ width = "auto", onReset = null, ...res }) => {
 
 export default Input;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<{width: string}>`
   display: block;
   position: relative;
   ${({ width }) => (width ? `width: ${width}` : null)};
@@ -25,7 +32,7 @@ const InputWrapper = styled.div`
   }
 `;
 
-const InputBox = styled.input`
+const InputBox = styled.input<{adPadding: boolean}>`
   display: inline-block;
   width: 100%;
   border: 0;
