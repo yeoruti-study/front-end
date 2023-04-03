@@ -3,7 +3,7 @@ import useTimerContext from "../hooks/useTimerContext";
 import useCounter from "../hooks/useCounter";
 import changeCountToTime from "../utils/changeCountToTime";
 import { getCookie, setCookie } from "../utils/cookieUtils";
-import formatDate from "../utils/formatDate";
+import UTC_toKR from '../utils/UTC_toKR';
 import styled from "styled-components";
 import { ReactComponent as Start } from "../assets/icons/start-timer-button.svg";
 import { ReactComponent as Stop } from "../assets/icons/stop-timer-button.svg";
@@ -24,13 +24,12 @@ const Timer = ({ children }) => {
   useEffect(() => {
     const totalTimeCookie = parseInt(getCookie("totalTime"));
     if (totalTimeCookie) {
-      const recentDateCookie = getCookie("recentDate");
-      if (recentDateCookie === formatDate(new Date()))
-        setTotal(changeCountToTime(totalTimeCookie));
+      const recentDateCookie = getCookie('recentDate');
+      if (recentDateCookie === UTC_toKR(new Date())) setTotal(changeCountToTime(totalTimeCookie));
       else {
-        console.log(recentDateCookie, formatDate(new Date()));
-        setCookie("totalTime", 0, 3);
-        setCookie("recentDate", formatDate(new Date()), 3);
+        console.log(recentDateCookie, UTC_toKR(new Date()));
+        setCookie('totalTime', 0, 3);
+        setCookie('recentDate', UTC_toKR(new Date()), 3);
       }
     }
   }, []);
