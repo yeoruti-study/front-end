@@ -8,18 +8,21 @@ import styled from "styled-components";
 import { ReactComponent as Start } from "../assets/icons/start-timer-button.svg";
 import { ReactComponent as Stop } from "../assets/icons/stop-timer-button.svg";
 import COLOR from "../style/color";
+import { useRecoilState, useRecoilValue } from "recoil";
+import timerSelector, { timerOnGoingAtom } from "../atoms/timer";
+import localConsole from "../utils/localConsole";
 
 export const TimerContext = createContext();
 
 const Timer = ({ children }) => {
-  const [showTotal, setShowTotal] = useState(true);
+  const [showTotal, setShowTotal] = useState(false);
   const [total, setTotal] = useState({
     hour: "00",
     min: "00",
     sec: "00",
     count: 0,
   });
-  const [onGoing, setOnGoing] = useState(false);
+  const [onGoing, setOnGoing] = useRecoilState(timerOnGoingAtom);
 
   useEffect(() => {
     const totalTimeCookie = parseInt(getCookie("totalTime"));
@@ -39,6 +42,7 @@ const Timer = ({ children }) => {
   };
 
   useEffect(() => {
+    localConsole.log("cookieupdate");
     setCookie("totalTime", total.count, 3);
   }, [total]);
 
@@ -54,7 +58,7 @@ const Timer = ({ children }) => {
 const TimeWindow = () => {
   const { showTotal, total, addTotal, onGoing } = useTimerContext();
   const [time, countUp, countReset] = useCounter();
-
+  const timerSelectorState = useRecoilValue(timerSelector);
   let timer;
 
   useEffect(() => {
@@ -66,6 +70,7 @@ const TimeWindow = () => {
         alert(
           `${time.hour}시간 ${time.min}분 ${time.sec}초의 집중력을 보여주셨습니다!`
         );
+      localConsole.log(timerSelectorState);
       countReset();
     }
     return () => {
@@ -111,23 +116,33 @@ const ToggleButton = () => {
   );
 };
 
-const ControlButton = () => {
+// type ControlButtonProps = {
+//   onStart: () => void;
+// }
+const ControlButton = (props) => {
+  const { onStart, onEnd } = props;
   const { onGoing } = useTimerContext();
-  return onGoing ? <StopButton /> : <StartButton />;
+  return onGoing ? (
+    <StopButton onTimerEnd={onEnd} />
+  ) : (
+    <StartButton onTimerStart={onStart} />
+  );
 };
 
-const StartButton = () => {
+const StartButton = ({ onTimerStart }) => {
   const { setShowTotal, setOnGoing } = useTimerContext();
   function onStart() {
     setShowTotal(false);
+    onTimerStart();
     return setOnGoing(true);
   }
   return <StartButtonWrapper onClick={onStart}>시작</StartButtonWrapper>;
 };
 
-const StopButton = () => {
+const StopButton = ({ onTimerEnd }) => {
   const { setOnGoing } = useTimerContext();
   function onStop() {
+    onTimerEnd();
     return setOnGoing(false);
   }
   return <StopButtonWrapper onClick={onStop}>중지</StopButtonWrapper>;
