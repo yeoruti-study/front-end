@@ -91,7 +91,7 @@ export const useStudyRoomPwCheckPost = () => {
     requester: STUDYROOM_PW_CHECK_POST.requester,
   });
 
-  const onClick = (id: string, roomPassword: string) => {
+  const onSubmit = (id: string, roomPassword: string) => {
     queryState.mutate({
       id,
       roomPassword,
@@ -107,5 +107,5 @@ export const useStudyRoomPwCheckPost = () => {
     }
   }, [status]);
 
-  return onClick;
+  return { onSubmit, setStudyPwPopup };
 };
