@@ -2,26 +2,27 @@ import React, { PropsWithChildren, useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import subIndexState from "../../../atoms/subIndex";
+import { timerOnGoingAtom } from "../../../atoms/timer";
 import { useUserStudySubjectListGet } from "../../../hooks/react_query_hooks/useStudySubject";
 import COLOR from "../../../style/color";
 import SlideButton from "../SlideButton";
 
 const Slider = () => {
   const [sliderIdx, setSliderIdx] = useRecoilState(subIndexState);
-
+  const onGoing = useRecoilValue(timerOnGoingAtom);
   const { status, data } = useUserStudySubjectListGet();
 
   return (
     <ButtonContainerDiv>
       {status === "success" && data && (
         <SliderWrap>
-          {sliderIdx > 0 && (
+          {sliderIdx > 0 && !onGoing && (
             <SlideButton
               direction="left"
               onClick={() => setSliderIdx((state) => state - 1)}
             />
           )}
-          {sliderIdx < data.data.data.length - 1 && (
+          {sliderIdx < data.data.data.length - 1 && !onGoing && (
             <SlideButton
               direction="right"
               onClick={() => setSliderIdx((state) => state + 1)}

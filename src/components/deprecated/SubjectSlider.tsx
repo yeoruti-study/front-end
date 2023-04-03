@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import useSliderContext from "../../hooks/useSliderContext";
-import SlideButton from "./SlideButton";
+import SlideButton from "../Slider/SlideButton";
 import COLOR from "../../style/color";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import subIndexState from "../../atoms/subIndex";

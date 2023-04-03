@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import roomUserApiClient from "../../../api/roomUser/roomUserApiClient";
 import categoryAddPopupAtom from "../../../atoms/categoryAdd";
 import { useStudyCategoryPost } from "../../../hooks/react_query_hooks/useStudyCategory";
 import { useStudyRoomPost } from "../../../hooks/react_query_hooks/useStudyRoom";
@@ -43,6 +44,7 @@ const StudyRoomAdd = () => {
         studyGoalTime:
           `PT${String(fieldValues["studyGoalTime"])}H` || undefined,
         roomPassword: String(fieldValues["roomPassword"]) || undefined,
+        hasRoomPassword: String(fieldValues["roomPassword"]) ? true : false,
       });
     }
   }
