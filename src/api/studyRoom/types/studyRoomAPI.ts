@@ -13,6 +13,7 @@ export interface StudyRoomPostRequest {
   maximumNumberOfPeople?: number;
   studyGoalTime?: string;
   roomPassword?: string;
+  hasRoomPassword: boolean;
 }
 
 export interface StudyRoomPostResponse extends DefaultResultRes {}

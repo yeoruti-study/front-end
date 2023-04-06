@@ -1,23 +1,24 @@
-import { RefObject, InputHTMLAttributes } from "react";
+import React, { ForwardedRef, MouseEventHandler} from "react";
 import styled from "styled-components";
 import COLOR from "../style/color";
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  width?: string;
-  onReset?: () => void;
-  inputRef?: RefObject<HTMLInputElement>;
-} ;
+interface InputP extends React.ComponentPropsWithoutRef<'input'>{
+  onReset?: () => void
+  adPadding?: () => void
+  onClick?: MouseEventHandler
+  width?: string
+} 
 
-const Input = ({ width = "auto", onReset, inputRef, ...res }: InputProps) => {
+const Input = ((props: InputP, ref: ForwardedRef<HTMLInputElement>) => {
   return (
-    <InputWrapper width={width}>
-      <InputBox ref={inputRef} {...res} adPadding={onReset ? true: false} />
-      {onReset && <RemoveIcon onClick={onReset}>&times;</RemoveIcon>}
+    <InputWrapper width={props.width?props.width:'auto'}>
+      <InputBox ref={ref} {...props} />
+      {props.onReset && <RemoveIcon onClick={props.onReset}>&times;</RemoveIcon>}
     </InputWrapper>
   );
-};
+})
 
-export default Input;
+export default React.forwardRef(Input);
 
 const InputWrapper = styled.div<{width: string}>`
   display: block;
@@ -32,7 +33,7 @@ const InputWrapper = styled.div<{width: string}>`
   }
 `;
 
-const InputBox = styled.input<{adPadding: boolean}>`
+const InputBox = styled.input<InputP>`
   display: inline-block;
   width: 100%;
   border: 0;
@@ -41,7 +42,7 @@ const InputBox = styled.input<{adPadding: boolean}>`
   font-size: 1rem;
 `;
 
-const RemoveIcon = styled.span`
+const RemoveIcon = styled.span<{onClick: React.MouseEventHandler}>`
   display: inline-block;
   position: absolute;
   right: 0.5rem;

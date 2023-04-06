@@ -22,7 +22,7 @@ const MyStudyRoomContainer = () => {
     }
   }, []);
   useEffect(() => {
-    if (curStudyRoom.id) {
+    if (curStudyRoom.hasRoomPassword) {
       setStudyPwPopup(true);
     }
   }, [curStudyRoom]);

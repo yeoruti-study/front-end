@@ -34,15 +34,15 @@ const LoginForm = () => {
         password: passwordRef.current.value
       };
       if (validate(loginform)) {
-        login(loginform)
+        login(loginform);
       }
     }
   };
 
   return (
     <LoginFormContainer>
-      <Input id='username' inputRef={usernameRef} placeholder='이메일' />
-      <Input id='password' inputRef={passwordRef} type='password' placeholder='비밀번호' />
+      <Input id='username' ref={usernameRef} placeholder='이메일' />
+      <Input id='password' ref={passwordRef} type='password' placeholder='비밀번호' />
       {/*
       <RememberMeToggle>
         <RememberMeToggle.ToggleButton />

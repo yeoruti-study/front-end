@@ -2,8 +2,8 @@
 
 import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
-import StudyList from "../../components/StudyRoom/StudyList";
-import StudyModal from "../../components/StudyRoom/StudyModal/StudyModal";
+import StudyList from "./StudyList";
+import StudyModal from "./StudyModal/StudyModal";
 import { useRoomUserAllGet } from "../../hooks/react_query_hooks/useRoomUser";
 import { useStudyRoomAllGet } from "../../hooks/react_query_hooks/useStudyRoom";
 import localConsole from "../../utils/localConsole";

@@ -3,7 +3,6 @@ import LoginContainer from "./containers/LoginContainer";
 import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import StudyHome from "./containers/StudyRoom/StudyHome";
 import FullCalendar from "./components/Calendar/FullCalendar";
 import OAuthContainer from "./containers/OAuthContainer";
 import StudyRoom from "./pages/StudyRoom";
@@ -72,7 +71,6 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/test" element={<StudyHome />} />
           </Routes>
         </MainContentWrapDiv>
       </GlobalWrap>

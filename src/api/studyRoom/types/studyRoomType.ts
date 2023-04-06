@@ -8,10 +8,10 @@ export interface StudyRoomType {
   };
   maximumNumberOfPeople: number;
   studyGoalTime?: string;
-  roomPassword?: string;
   masterUserId?: string;
   createdAt: string;
   updatedAt?: string;
   masterUserUsername: string;
   masterUserProfileName: string;
+  hasRoomPassword: boolean;
 }

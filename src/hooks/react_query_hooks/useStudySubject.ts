@@ -1,3 +1,4 @@
+import { timerOnGoingAtom, timerSubjectAtom } from "./../../atoms/timer";
 import {
   USER_STUDY_SUBJECT_LIST_GET,
   USER_STUDY_SUBJECT_POST,
@@ -14,6 +15,8 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import subListState from "../../atoms/subList";
 import newSubState from "../../atoms/newSub";
 import { useEffect } from "react";
+import timerAtom from "../../atoms/timer";
+import timerSelector from "../../atoms/timer";
 
 export const useUserStudySubjectPost = () => {
   const queryClient = useQueryClient();
@@ -40,6 +43,8 @@ export const useUserStudySubjectPost = () => {
 
 export const useUserStudySubjectListGet = () => {
   const setSubList = useSetRecoilState(subListState);
+  const setOnGoing = useSetRecoilState(timerOnGoingAtom);
+  const setTimerSubject = useSetRecoilState(timerSubjectAtom);
   const queryState = useResource({
     useQuery,
     key: USER_STUDY_SUBJECT_LIST_GET.key,
@@ -52,6 +57,13 @@ export const useUserStudySubjectListGet = () => {
         { id: "default", title: "과목 추가하기" },
         ...queryState.data.data.data,
       ]);
+      const firstItem = queryState.data.data.data[0];
+
+      setOnGoing(false);
+      setTimerSubject({
+        id: firstItem.id,
+        title: firstItem.title,
+      });
     }
   }, [queryState.status]);
 

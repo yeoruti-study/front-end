@@ -1,7 +1,9 @@
 import React, { PropsWithChildren, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { curStudyRoomIdSelector } from "../../../atoms/curStudyRoom";
+import curStudyRoomAtom, {
+  curStudyRoomIdSelector,
+} from "../../../atoms/curStudyRoom";
 import studyPwPopupAtom from "../../../atoms/studyPwPopup";
 import { useStudyRoomPwCheckPost } from "../../../hooks/react_query_hooks/useStudyRoom";
 import getFieldError from "../../../utils/getFieldError";
@@ -32,21 +34,21 @@ const PasswordPopupBackground = () => {
 
 const PasswordPopupForm = () => {
   const [wasSubmitted, setWasSubmitted] = useState(false);
-  const onSubmit = useStudyRoomPwCheckPost();
+  const { onSubmit, setStudyPwPopup } = useStudyRoomPwCheckPost();
   const studyRoomId = useRecoilValue(curStudyRoomIdSelector);
-
+  const setCurStudyRoom = useSetRecoilState(curStudyRoomAtom);
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const fieldValues = Object.fromEntries(formData.entries());
     localConsole?.log(fieldValues);
     localConsole?.log(formData.entries());
-    // const formIsValid = Object.values(fieldValues).every(
-    //   (value) => !getFieldError(true, value as string)
-    // );
+    const formIsValid = Object.values(fieldValues).every(
+      (value) => !getFieldError(true, value as string)
+    );
 
     setWasSubmitted(true);
-    if (true) {
+    if (formIsValid) {
       // TODO: API 연결
       localConsole?.log(String(fieldValues["roomPassword"]));
       onSubmit(studyRoomId, String(fieldValues["roomPassword"]));
@@ -55,6 +57,45 @@ const PasswordPopupForm = () => {
   }
   return (
     <PasswordPopupFormBox noValidate onSubmit={handleSubmit}>
+      <BackButton
+        onClick={() => {
+          setCurStudyRoom({
+            id: "",
+            name: "",
+            studyCategoryDto: {
+              id: "",
+              name: "",
+              description: "",
+            },
+            maximumNumberOfPeople: 0,
+            studyGoalTime: "",
+            hasRoomPassword: false,
+            masterUserId: "",
+            createdAt: "",
+            updatedAt: "",
+            masterUserUsername: "",
+            masterUserProfileName: "",
+          });
+          setStudyPwPopup(false);
+          sessionStorage.removeItem("my_study_room");
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="rgba(0,0,0,0.2)"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 19.5L8.25 12l7.5-7.5"
+          />
+        </svg>
+      </BackButton>
+
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -124,4 +165,17 @@ const PasswordPopupFormBox = styled.form`
     color: #c60404 !important;
     font-size: 0.8rem;
   }
+`;
+const BackButton = styled.div`
+  cursor: pointer;
+  position: absolute;
+  left: 10px;
+  top: 20px;
+  svg {
+    height: 40px;
+    width: auto;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

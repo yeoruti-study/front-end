@@ -1,17 +1,17 @@
 // deprecated
 
-import SubjectSlider from "../components/Slider/SubjectSlider";
+import SubjectSlider from "./SubjectSlider";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import subIndexState from "../atoms/subIndex";
-import Input from "../common/Input";
-import Button from "../common/Button";
-import newSubState from "../atoms/newSub";
-import subListState from "../atoms/subList";
+import subIndexState from "../../atoms/subIndex";
+import Input from "../../common/Input";
+import Button from "../../common/Button";
+import newSubState from "../../atoms/newSub";
+import subListState from "../../atoms/subList";
 import {
   useUserStudySubjectListGet,
   useUserStudySubjectPost,
-} from "../hooks/react_query_hooks/useStudySubject";
+} from "../../hooks/react_query_hooks/useStudySubject";
 
 // export type DataType = {
 //   id: string;

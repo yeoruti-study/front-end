@@ -13,7 +13,7 @@ const curStudyRoomAtom = atom<StudyRoomType>({
     },
     maximumNumberOfPeople: 0,
     studyGoalTime: "",
-    roomPassword: "",
+    hasRoomPassword: false,
     masterUserId: "",
     createdAt: "",
     updatedAt: "",

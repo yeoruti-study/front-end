@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Slider from "../components/Slider/newSlider/Slider";
 import { PropsWithChildren } from "react";
 import SubjectAddDelete from "../components/SubjectAddDelete/SubjectAddDelete";
+import RecentRecordContainer from "../containers/RecentRecordContainer";
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
         <TimerContainer />
       </HomeBoxWrap>
       <SubjectAddDelete />
+      {/* <RecentRecordContainer /> */}
       {/* <StudyRoomPreview /> */}
     </HomeWrap>
   );

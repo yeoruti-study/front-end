@@ -13,6 +13,7 @@ import { StudyRoomPostRequest } from "../../api/studyRoom/types/studyRoomAPI";
 import { useSetRecoilState } from "recoil";
 import studyPwPopupAtom from "../../atoms/studyPwPopup";
 import { useEffect } from "react";
+import localConsole from "../../utils/localConsole";
 
 export const useStudyRoomPost = () => {
   const queryState = useSetResource({
@@ -36,7 +37,9 @@ export const useStudyRoomAllGet = () => {
     key: STUDYROOM_ALL_GET.key,
     fetcher: STUDYROOM_ALL_GET.fetcher,
   });
-
+  if (queryState.status === "success" && queryState.data) {
+    localConsole?.log(queryState.data.data.data);
+  }
   return queryState;
 };
 
@@ -88,7 +91,7 @@ export const useStudyRoomPwCheckPost = () => {
     requester: STUDYROOM_PW_CHECK_POST.requester,
   });
 
-  const onClick = (id: string, roomPassword: string) => {
+  const onSubmit = (id: string, roomPassword: string) => {
     queryState.mutate({
       id,
       roomPassword,
@@ -104,5 +107,5 @@ export const useStudyRoomPwCheckPost = () => {
     }
   }, [status]);
 
-  return onClick;
+  return { onSubmit, setStudyPwPopup };
 };

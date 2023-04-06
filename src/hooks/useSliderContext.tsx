@@ -1,5 +1,5 @@
 import React from "react";
-import { SliderContext } from "../components/Slider/SubjectSlider";
+import { SliderContext } from "../components/deprecated/SubjectSlider";
 
 const useSliderContext = () => {
   const context = React.useContext(SliderContext);
