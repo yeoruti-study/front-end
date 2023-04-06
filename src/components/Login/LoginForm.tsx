@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
 import Input from '../../common/Input';
-import RememberMeToggle from './RememberMeToggle';
+//import RememberMeToggle from './RememberMeToggle';
 import Button from '../../common/Button';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useGeneralLogin } from '../../hooks/react_query_hooks/useGeneralLogin';
 import { LoginFormType } from '../../api/generalLogin/types/generalLoginType';
 
-const EMAIL_REGEXP = new RegExp("^[\\w\\-]+(\\.[\\w\\-_]+)*@[\\w\\-]+(\\.[\\w\\-]+)*(\\.[a-zA-Z]{2,3})$", "gi");
+const EMAIL_REGEXP = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
 const validate = ({ username, password }: LoginFormType) => {
   console.log(username, password);
   // 나중엔 경고 문구 모두 모두 하단의 빨간 글씨로 변경 예정
@@ -19,21 +19,23 @@ const validate = ({ username, password }: LoginFormType) => {
     return false;
   }
   return true;
-
 };
 
 const LoginForm = () => {
   const login = useGeneralLogin();
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  let loginform: LoginFormType = { username: '', password: '' };
 
   const onLogin = () => {
     if (usernameRef.current && passwordRef.current){
-      const loginform: LoginFormType = {
+      loginform = {
         username: usernameRef.current.value,
         password: passwordRef.current.value
       };
-      if (validate(loginform)) login(loginform);
+      if (validate(loginform)) {
+        login(loginform)
+      }
     }
   };
 

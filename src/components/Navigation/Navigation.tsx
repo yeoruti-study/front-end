@@ -5,7 +5,7 @@ import styled from "styled-components";
 import COLOR from "../../style/color";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userInfoAtom from "../../atoms/userInfo";
-import logoutRequest from "../../api/temporary";
+import logoutRequest from "../../api/generalLogin";
 import localConsole from "../../utils/localConsole";
 import newLogo from "../../assets/logo_no_background.png";
 
@@ -101,7 +101,7 @@ const Logout = () => {
   const setUserInfo = useSetRecoilState(userInfoAtom);
   const handleLogout = () => {
     logoutRequest
-      .LogoutGet()
+      .GeneralLogoutGet()
       .then((res) => {
         localConsole?.log(res);
         setUserInfo({

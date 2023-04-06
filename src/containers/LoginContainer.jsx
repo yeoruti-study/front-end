@@ -20,11 +20,11 @@ export default Login;
 const LoginContainer = styled.div`
   display: flex;
   width: 500px;
-  height: 100%;
+  height: 700px;
   margin: auto;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center ;
 `;
 
 const LogoWrapper = styled.div`
