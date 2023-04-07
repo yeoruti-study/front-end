@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Input from "../../common/Input";
 import COLOR from '../../style/color';
@@ -33,6 +33,10 @@ const CalendarModal = ({ selectInfo, close }: CalendarModalProps) => {
   const studyGoalRef = useRef<HTMLInputElement[] | HTMLTextAreaElement[] | HTMLSelectElement[]>([]);
   const studySubjectList = useUserStudySubjectListGet();
 
+  useEffect(() => {
+    studyGoalRef.current && studyGoalRef.current[0].focus();
+  }, []);
+  
   // Input Dom의 값 저장 및 가공
   const onSave = () => {
     let newStudyGoal: any = initialGoal;
